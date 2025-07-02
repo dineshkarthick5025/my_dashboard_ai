@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Small ECharts Bar Chart</title>
+  <style>
+    #smallChart {
+      width: 200px;
+      height: 150px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+
+<div id="smallChart"></div>
+
+<!-- ECharts Library -->
+<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+
+<script>
+  const chartContainer = document.getElementById('smallChart');
+  const chart = echarts.init(chartContainer, null, { renderer: 'svg', width: 200, height: 150 });
+
+  const option = {
+    grid: {
+      top: 30,
+      bottom: 1,
+      left: 2,
+      right: 80,
+      containLabel: true
+    },
+    title: {
+      text: 'Sales',
+      left: 'center',
+      textStyle: {
+        fontSize: 10
+      }
+    },
+    tooltip: {
+      trigger: 'axis'
+    },
+    xAxis: {
+      type: 'category',
+      data: ['A', 'B', 'C', 'D', 'E'],
+      name: 'Category',
+      axisLabel: {
+        fontSize: 8,
+        interval: 0,
+        rotate: 30
+      }
+    },
+    yAxis: {
+      type: 'value',
+      name: 'Value',
+      axisLabel: {
+        fontSize: 8
+      }
+    },
+    series: [{
+      type: 'bar',
+      data: [5, 20, 15, 10, 25],
+      itemStyle: {
+        color: '#3498db'
+      },
+      label: {
+        show: false
+      }
+    }]
+  };
+
+  chart.setOption(option);
+</script>
+
+</body>
+</html>

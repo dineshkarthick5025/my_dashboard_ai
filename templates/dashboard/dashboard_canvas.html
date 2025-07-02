@@ -1,0 +1,12 @@
+<div class="canvas" id="dashboardCanvas">
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="/static/js/dashboard_canvas.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  {% if dashboard_data %}
+  restoreDashboardFromData({{ dashboard_data | tojson | safe }});
+  {% endif %}
+});
+</script>

@@ -1,0 +1,310 @@
+/* Common gradient */
+:root {
+  --gradient: linear-gradient(135deg, #0f2027, #203a43, #2c5364, #1b2735);
+}
+
+
+/* Global Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--gradient);
+    min-height: 100vh;
+}
+
+/* Sidebar Styling */
+.sidebar {
+    width: 260px;
+    background: transparent;
+    color: white;
+    height: 100vh;
+    padding: 20px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-title {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 40px;
+    text-align: center;
+    text-shadow: 0 0 10px #00ccff;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    flex-grow: 1;
+}
+
+.sidebar ul li {
+    margin-bottom: 20px;
+}
+
+.sidebar ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 16px;
+    display: block;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: background 0.3s;
+}
+
+.sidebar ul li a:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Header Bar Styling */
+.header-bar {
+    background: transparent;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-left: 260px;
+    position: fixed;
+    width: calc(100% - 260px);
+    top: 0;
+    height: 60px;
+    color: white;
+}
+
+.header-bar select,
+.header-bar button,
+.header-bar a {
+    margin-left: 15px;
+    background: #00ccff;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s, transform 0.3s;
+    text-decoration: none;
+}
+
+.header-bar select {
+    padding: 6px 10px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid #ccc;
+}
+
+.header-bar button:hover,
+.header-bar a:hover {
+    background-color: #00aacc;
+    transform: scale(1.05);
+}
+
+/* Main Content Area */
+.main-content {
+    margin-left: 260px;
+    padding: 80px 20px 20px;
+    background: white;
+    min-height: 100vh;
+    color: #333;
+}
+
+/* Headings */
+h2, h3 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+p {
+    color: #555;
+    margin-bottom: 15px;
+}
+
+/* Utility Classes */
+button {
+    background-color: #00ccff;
+    color: white;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+button:hover {
+    background-color: #00aacc;
+    transform: scale(1.03);
+}
+
+select {
+    padding: 6px 10px;
+    border-radius: 6px;
+}
+
+/* Main Content Styles */
+.main-content {
+    margin-left: 260px;
+    margin-top: 60px;
+    padding: 20px;
+    height: calc(100vh - 60px);
+    overflow-y: auto;
+}
+
+
+h2 {
+    margin-top: 20px;
+    color: #2c3e50;
+    font-size: 1.8rem;
+}
+
+.quick-actions {
+    margin-top: 30px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    background: #f9f9f9;
+    border-radius: 8px;
+}
+
+.quick-actions h3 {
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+    color: #333;
+}
+
+.action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.action-card {
+    flex: 1 1 160px;
+    background: #3498db;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    min-width: 140px;
+}
+
+.action-card:hover {
+    background: #2980b9;
+    transform: translateY(-3px);
+}
+
+/* Recent Dashboards Container */
+.recent-dashboards {
+    margin-top: 30px;
+}
+
+.recent-dashboards h3 {
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+    color: #333;
+}
+
+/* Modal Styling */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 12% auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    width: 360px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.modal-content h2, .modal-content h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+    color: #2c3e50;
+}
+
+.db-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.db-option {
+    padding: 10px;
+    border: 1px solid #3498db;
+    border-radius: 4px;
+    background: white;
+    color: #3498db;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.db-option:hover {
+    background: #3498db;
+    color: white;
+}
+
+#postgresForm label {
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 4px;
+    font-size: 0.95rem;
+    color: #333;
+}
+
+#postgresForm input,
+#postgresForm select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#postgresForm button {
+    background: #3498db;
+    color: white;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.2s ease;
+}
+
+#postgresForm button:hover {
+    background: #2980b9;
+}
+
+.close {
+    float: right;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: #aaa;
+}
+
+.close:hover {
+    color: #e74c3c;
+}

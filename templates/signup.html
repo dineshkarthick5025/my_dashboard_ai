@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Account | AI Analytics</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364, #1b2735);
+      background-size: 400% 400%;
+      animation: gradientBG 10s ease infinite;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .wrapper {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .signup-box {
+      background-color: rgba(255, 255, 255, 0.95);
+      padding: 40px;
+      border-radius: 10px;
+      width: 420px;
+      box-shadow: 0 6px 30px rgba(0, 0, 0, 0.2);
+      color: #1a0b58;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      font-weight: bold;
+      font-size: 24px;
+      margin-bottom: 30px;
+      text-shadow: 0 0 10px #00ccff, 0 0 20px #00ccff;
+    }
+
+    .logo img {
+      width: 30px;
+      height: 30px;
+      filter: drop-shadow(0 0 6px #00ccff) drop-shadow(0 0 12px #00ccff);
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 22px;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 24px;
+    }
+
+    .input-group {
+      margin-bottom: 16px;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 10px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    .name-fields {
+      display: flex;
+      gap: 10px;
+    }
+
+    .name-fields .input-group {
+      flex: 1;
+    }
+
+    .password-hint {
+      font-size: 12px;
+      color: #6b7280;
+      margin-top: 4px;
+    }
+
+    button {
+      width: 100%;
+      background-color: #00ccff;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.3s;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #00aacc;
+      transform: scale(1.03);
+    }
+
+    .footer-text {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 14px;
+    }
+
+    .footer-text a {
+      color: #00ccff;
+      text-decoration: none;
+    }
+
+    .footer-text a:hover {
+      text-decoration: underline;
+    }
+
+    .error {
+      background-color: #fee2e2;
+      color: #b91c1c;
+      padding: 10px;
+      border-radius: 6px;
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="signup-box">
+      <div class="logo">
+        <img src="https://img.icons8.com/ios-filled/50/1a0b58/artificial-intelligence.png" alt="AI Icon" />
+        <span>AI ANALYTICS</span>
+      </div>
+
+      <h1>Create your account</h1>
+      <p class="subtitle">Join our community today</p>
+
+      {% if error %}
+        <div class="error">{{ error }}</div>
+      {% endif %}
+
+      <form method="post">
+        <div class="name-fields">
+          <div class="input-group">
+            <label for="first_name">First Name</label>
+            <input type="text" id="first_name" name="first_name" required />
+          </div>
+          <div class="input-group">
+            <label for="last_name">Last Name</label>
+            <input type="text" id="last_name" name="last_name" required />
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required />
+        </div>
+
+        <div class="input-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" required />
+        </div>
+
+        <div class="input-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required />
+          <p class="password-hint">Use 8 or more characters with a mix of letters, numbers & symbols</p>
+        </div>
+
+        <div class="input-group">
+          <label for="confirm_password">Confirm Password</label>
+          <input type="password" id="confirm_password" name="confirm_password" required />
+        </div>
+
+        <button type="submit">Create Account</button>
+      </form>
+
+      <p class="footer-text">
+        Already have an account? <a href="/login">Sign in</a>
+      </p>
+    </div>
+  </div>
+</body>
+</html>

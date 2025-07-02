@@ -1,0 +1,39 @@
+{% extends "dashboard.html" %}
+
+{% block content %}
+<h2>Welcome to the Dashboard</h2>
+<p>This is the Dashboard section.</p>
+
+<!-- New Dashboard Button -->
+<a href="/dashboardeditor" class="new-dashboard-btn">➕ New Dashboard</a>
+
+<!-- Thumbnails Section -->
+<div id="dashboardList" class="thumbnail-grid">
+  {% for dash in dashboards %}
+  <div class="dashboard-thumbnail">
+    <div class="thumbnail-header">
+      <span>{{ dash.name }}</span>
+      <div class="thumbnail-actions">
+        <button onclick="editDashboard({{ dash.id }})">✏️</button>
+        <button onclick="deleteDashboard({{ dash.id }})">🗑️</button>
+      </div>
+    </div>
+    
+    <div class="thumbnail-preview">
+      {% if dash.thumbnail %}
+        <img src="{{ dash.thumbnail }}" alt="Dashboard Thumbnail" style="width: 100%; height: auto;" />
+      {% else %}
+        <p>No preview available</p>
+      {% endif %}
+    </div>
+
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<link rel="stylesheet" href="/static/css/bidashboard_tab.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="/static/js/bidashboard_tab.js"></script>
+{% endblock %}

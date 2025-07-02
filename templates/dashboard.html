@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Dashboard{% endblock %}</title>
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+    <link rel="stylesheet" href="/static/css/data_tab.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-title">MyDashboard</div>
+        <ul>
+            <li><a href="/dashboard/bihome">BI Home</a></li>
+            <li><a href="/dashboard/bidashboard">Dashboard</a></li>
+            <li><a href="/dashboard/data">Data</a></li>
+            <li><a href="/dashboard/history">History</a></li>
+            <li><a href="/dashboard/settings">Settings</a></li>
+        </ul>
+    </div>
+
+
+    <!-- Top header -->
+    <div class="header-bar">
+        <div class="header-right">
+            <select name="language" id="language-select">
+                <option value="en">English</option>
+                <option value="hi">Arabic</option>
+                <option value="fa">Farsi</option>
+            </select>
+            <button class="profile-btn">Profile</button>
+            <a href="#" class="logout-btn" onclick="handleLogout()">Logout</a>
+        </div>
+    </div>
+
+    <!-- Main content -->
+    <div class="main-content">
+        {% block content %}{% endblock %}
+    </div>
+    <script>
+        function handleLogout() {
+            sessionStorage.clear();
+            window.location.href = "/logout";
+        }
+    </script>
+
+    {% block scripts %}
+    {% endblock %}
+
+
+</body>
+</html>
+
+

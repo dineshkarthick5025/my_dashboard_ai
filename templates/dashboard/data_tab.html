@@ -1,0 +1,108 @@
+{% extends "dashboard.html" %}
+{% block title %}Data Tab{% endblock %}
+
+{% block content %}
+<style>
+  .spinner-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.spinner {
+  width: 60px;
+  height: 60px;
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+</style>
+
+<h2>Connected Databases</h2>
+
+{% if message %}
+  <div class="alert" style="background-color: #e6f7ff; color: #005b99; padding: 12px; border-radius: 6px; margin-bottom: 20px;">
+    {{ message }}
+  </div>
+{% endif %}
+
+<button id="connectDatabase">➕ Connect Database</button>
+
+    
+
+<!-- Hidden Modal -->
+<div id="dbModal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="closeModal">&times;</span>
+        <h2>Select Database Type</h2>
+        <div class="db-options">
+            <button class="db-option" data-type="PostgreSQL" onclick="openPostgresForm()">PostgreSQL</button>
+            <button class="db-option" data-type="MySQL">MySQL</button>
+            <button class="db-option" data-type="MSSQL">MSSQL</button>
+            <button class="db-option" data-type="Oracle">Oracle</button>
+        </div>
+    </div>
+</div>
+<div id="postgresModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closePostgresForm()">&times;</span>
+    <h3>Connect to PostgreSQL</h3>
+    <form id="postgresForm" method="post" action="/dashboard/data">
+      <input type="hidden" name="db_type" value="PostgreSQL">
+      <label>Host:</label>
+      <input type="text" name="host" required>
+      <label>Port:</label>
+      <input type="number" name="port" value="5432" required>
+      <label>Database Name:</label>
+      <input type="text" name="database" required>
+      <label>Username:</label>
+      <input type="text" name="user" required>
+      <label>Password:</label>
+      <input type="password" name="password" required>
+      <label>SSL Mode:</label>
+      <select name="sslmode">
+        <option value="disable">Disable</option>
+        <option value="require">Require</option>
+        <option value="verify-ca">Verify CA</option>
+        <option value="verify-full">Verify Full</option>
+      </select>
+      <button type="submit">Connect</button>
+    </form>
+  </div>
+</div>
+
+
+
+<button id="refreshPreviewsBtn">🔄 Refresh Previews</button>
+<div id="loadingSpinner" class="spinner-overlay" style="display: none;">
+  <div class="spinner"></div>
+  <p style="color:white; margin-top:10px;">Loading Previews...</p>
+</div>
+
+<div id="preview-section" class="db-wrapper">
+  <p>Loading previews...</p>
+</div>
+
+
+
+{% block scripts %}
+<script src="/static/js/modal.js"></script>
+<script src="/static/js/load_previews.js"></script>
+{% endblock %}
+
+{% endblock %}
+

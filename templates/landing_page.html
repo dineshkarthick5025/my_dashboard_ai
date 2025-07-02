@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Analytics Landing</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      height: 100vh;
+      background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364, #1b2735);
+      background-size: 400% 400%;
+      animation: gradientBG 10s ease infinite;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      flex-direction: column;
+      padding: 20px;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .logo {
+      width: 100px;
+      height: 100px;
+      margin-bottom: 20px;
+      filter: drop-shadow(0 0 8px #00ccff);
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin: 10px 0;
+    }
+
+    p {
+      font-size: 1.2rem;
+      max-width: 600px;
+      line-height: 1.6;
+      margin-bottom: 40px;
+    }
+
+    .buttons a {
+      text-decoration: none;
+      color: white;
+      background-color: #00ccff;
+      padding: 12px 24px;
+      margin: 0 10px;
+      border-radius: 25px;
+      font-weight: 600;
+      transition: background-color 0.3s, transform 0.3s;
+    }
+
+    .buttons a:hover {
+      background-color: #00aacc;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+
+  <img class="logo" src="https://img.icons8.com/ios-filled/100/00ccff/artificial-intelligence.png" alt="AI Logo">
+  <h1>Analytics on Autopilot.</h1>
+  <p>Transform Your Data Analytics with AI—Unlock Smarter Insights, Faster Decisions, and Game-Changing Growth!</p>
+
+  <div class="buttons">
+    <a href="/login">Login</a>
+    <a href="/signup">Sign Up</a>
+  </div>
+
+</body>
+</html>

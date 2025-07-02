@@ -1,0 +1,68 @@
+{% extends "dashboard.html" %}
+{% block content %}
+<h2>Query History</h2>
+
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    th, td {
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        text-align: left;
+        vertical-align: top;
+    }
+    pre {
+        background: #f9f9f9;
+        padding: 10px;
+        overflow-x: auto;
+        max-height: 200px;
+    }
+    .expand-btn {
+        cursor: pointer;
+        color: #007bff;
+        text-decoration: underline;
+    }
+</style>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Prompt</th>
+            <th>Status</th>
+            <th>SQL Query</th>
+            <th>LLM Config</th>
+            <th>Created At</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in history %}
+        <tr>
+            <td>{{ row.id }}</td>
+            <td>{{ row.prompt }}</td>
+            <td>{{ row.status }}</td>
+            <td>
+                <span class="expand-btn" onclick="toggleExpand('sql{{ row.id }}')">View</span>
+                <pre id="sql{{ row.id }}" style="display: none;">{{ row.generated_query }}</pre>
+            </td>
+            <td>
+                <span class="expand-btn" onclick="toggleExpand('config{{ row.id }}')">View</span>
+                <pre id="config{{ row.id }}" style="display: none;">{{ row.llm_config }}</pre>
+            </td>
+            <td>{{ row.created_at }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+function toggleExpand(id) {
+    const el = document.getElementById(id);
+    el.style.display = (el.style.display === 'none') ? 'block' : 'none';
+}
+</script>
+
+{% endblock %}
+
