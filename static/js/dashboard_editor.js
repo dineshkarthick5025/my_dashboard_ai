@@ -93,16 +93,39 @@ async function generateDashboard() {
 
     const result = await response.json();
     console.log('Dashboard generation result:', result);
+
     if (result.status === 'success') {
-      renderChartToCanvas(result.echarts_config, result.chart_type);
+
+      const intent = result.intent;
+      const outputFormat = result.output_format || 'visual'; // For forecasting intent only
+
+      if (intent === 'forecasting') {
+        
+        if (outputFormat === 'visual' || outputFormat === 'both') {
+          renderChartToCanvas(result.echarts_config, "line");
+        }
+
+        if (outputFormat === 'text' || outputFormat === 'both') {
+          renderTextOutput(result.forecast);
+        }
+
+      } else if (intent === 'visualization') {
+        renderChartToCanvas(result.echarts_config, result.chart_type);
+
+      } else {
+        alert('Unsupported intent. Please try again.');
+      }
+
     } else {
-      alert('Chart generation failed. Please try again.');
+      alert('Dashboard generation failed. Please try again.');
     }
+
   } catch (error) {
     console.error('Error generating dashboard:', error);
     alert('Something went wrong.');
   }
 }
+
 
 // Main Chart.js rendering function
 function renderChartToCanvas(chartData, chartType = 'bar', shouldSave = true) {

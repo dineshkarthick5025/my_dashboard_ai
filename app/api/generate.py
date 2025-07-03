@@ -8,7 +8,7 @@ from app.session_connection import session_conn_manager
 from app.models.query_history import QueryHistory
 from app.models.user import User
 import re
-from app.generatefuncs import classify_intent_with_llm, summarize_anomalies_with_llm
+from app.generatefuncs import classify_intent_with_llm, summarize_anomalies_with_llm, generate_sql_from_prompt_for_prophet
 
 router = APIRouter()
 
@@ -41,6 +41,20 @@ def get_predefined_echarts_config(chart_type: str) -> dict:
     else:
         return {}
 
+def detect_output_format(prompt: str) -> str:
+    """
+    Detects if the user wants 'visual', 'text', or 'both' output based on the prompt.
+    """
+    prompt = prompt.lower()
+    
+    if re.search(r"\bgraph\b|\bchart\b|\bvisual(ization)?\b|\bplot\b", prompt):
+        return "visual"
+    elif re.search(r"\btable\b|\blist\b|\btext\b|\bsummary\b", prompt):
+        return "text"
+    elif re.search(r"\bboth\b|\bvisual and text\b", prompt):
+        return "both"
+    else:
+        return "text"  # Default to text if unclear
 
 
 def detect_anomalies(data):
@@ -107,7 +121,7 @@ def run_forecasting(data, user_prompt):
     """
     import pandas as pd
     from prophet import Prophet
-
+    print("data given to forcast",data)
     df = pd.DataFrame(data)
     
     # Assuming 'date' and 'value' columns exist
@@ -227,7 +241,7 @@ def detect_chart_type(prompt: str) -> str:
 # --- Main Route ---
 from app.models import QueryHistory
 
-"""@router.post("/dashboard/generate")
+@router.post("/dashboard/generate")
 async def generate_dashboard(
     request: Request,
     current_user: User = Depends(get_current_user),
@@ -253,8 +267,12 @@ async def generate_dashboard(
     intent = classify_intent_with_llm(prompt)  # e.g., "visualization", "anomaly_detection", etc.
     
     # For most intents, SQL is still needed
-    sql_query = generate_sql_from_prompt(prompt, schema, db_type)
-    print(f"📝 [DEBUG] Generated SQL: {sql_query}")
+    if intent=="visualization":
+        sql_query = generate_sql_from_prompt(prompt, schema, db_type)
+        print(f"📝 [DEBUG] Generated SQL: {sql_query}")
+    elif intent == "forecasting":
+        sql_query_forcast = generate_sql_from_prompt_for_prophet(prompt, schema, db_type)
+        print(f"📝 [DEBUG] Generated SQL for forecasting: {sql_query}")
 
     cursor = conn.cursor()
     try:
@@ -262,6 +280,7 @@ async def generate_dashboard(
         rows = cursor.fetchall()
         columns = [desc[0] for desc in cursor.description]
         transformed_data = transform_sql_result_to_llm_json(columns, rows)
+        print(f"✅ [DEBUG] Transformed Data: {transformed_data}")
     except Exception as e:
         print(f"❌ [ERROR] SQL Execution Failed: {e}")
         save_query_history(db, current_user, prompt, sql_query, "failed", None)
@@ -279,30 +298,20 @@ async def generate_dashboard(
             "echarts_config": echarts_config
         }
 
-    elif intent == "anomaly_detection":
-        anomalies = detect_anomalies(transformed_data)
-        result_payload = {
-            "anomalies": anomalies,
-            "summary": f"{len(anomalies)} anomalies detected"
-        }
-
-    elif intent == "prediction":
-        prediction_result = run_prediction(transformed_data, prompt)
-        result_payload = {
-            "prediction": prediction_result
-        }
-
     elif intent == "forecasting":
         forecast_result = run_forecasting(transformed_data, prompt)
+        output_format = detect_output_format(prompt)
+
         result_payload = {
-            "forecast": forecast_result
+            "forecast": forecast_result,
+            "output_format": output_format
         }
 
-    elif intent == "clustering":
-        cluster_result = run_clustering(transformed_data)
-        result_payload = {
-            "clusters": cluster_result
-        }
+        if output_format in ["visual", "both"]:
+            chart_type = "line"  # Forecasts are usually line charts
+            echarts_config = generate_echarts_config(prompt, forecast_result, chart_type)
+            result_payload["echarts_config"] = echarts_config
+
 
     else:
         return JSONResponse(status_code=400, content={"error": "Unrecognized intent"})
@@ -310,13 +319,15 @@ async def generate_dashboard(
     # Save successful query
     save_query_history(db, current_user, prompt, sql_query, status, result_payload)
 
+    print(f"✅ [DEBUG] Result Payload: {result_payload}")
     return {
         "status": status,
         "intent": intent,
         **result_payload
-    }"""
+    }
 
-@router.post("/dashboard/generate")
+
+"""@router.post("/dashboard/generate")
 async def generate_dashboard(
     request: Request,
     current_user: User = Depends(get_current_user),
@@ -384,5 +395,5 @@ async def generate_dashboard(
         "status": "success",
         "chart_type": chart_type,
         "echarts_config": echarts_config
-    }
+    }"""
 

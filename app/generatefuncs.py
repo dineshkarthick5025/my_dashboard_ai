@@ -277,3 +277,90 @@ Provide a simple, user-friendly summary.
 
     return response.choices[0].message.content.strip()
 
+
+
+
+
+
+
+
+def generate_sql_from_prompt_for_prophet(prompt, schema, db_type):
+    """
+    Generates SQL queries specifically optimized for Prophet forecasting,
+    preparing data in the required ds (date) and y (metric) format.
+    
+    Args:
+        prompt (str): User's forecasting question in plain English
+        schema (str): Database table/column schema
+        db_type (str): Type of database (e.g., 'postgresql', 'mysql')
+        
+    Returns:
+        str: SQL query that outputs data in Prophet-ready format (ds, y)
+    """
+    
+    # Enhanced prompt with Prophet-specific requirements
+    prophet_prompt = f"""
+    The following is a request for time-series forecasting using Facebook Prophet:
+    {prompt}
+    
+    Generate a SQL query that:
+    1. Identifies the date column (rename to 'ds') and metric column (rename to 'y')
+    2. Aggregates data to daily level (or other appropriate time granularity)
+    3. Ensures no gaps in the time series (continuous dates)
+    4. Sorts chronologically by date
+    5. Handles NULLs appropriately (fill or filter)
+    6. Returns exactly two columns: 'ds' (date) and 'y' (numeric value)
+    
+    The output must be compatible with Prophet's requirements:
+    - 'ds' must be a date/datetime type
+    - 'y' must be numeric
+    - No missing dates in the series
+    """
+    
+    # Use the existing function with our enhanced Prophet prompt
+    base_sql = generate_sql_from_prompt(prophet_prompt, schema, db_type)
+    
+    # Additional processing to ensure Prophet compatibility
+    if "ds" not in base_sql.lower() or "y" not in base_sql.lower():
+        # If the query doesn't explicitly format for Prophet, wrap it
+        prophet_wrapper = f"""
+        WITH base_data AS (
+            {base_sql}
+        )
+        SELECT
+            date_column AS ds,
+            value_column AS y
+        FROM base_data
+        ORDER BY ds
+        """
+        return clean_sql(prophet_wrapper)
+    
+    return base_sql
+
+
+def clean_sql(sql_query):
+    """
+    Cleans SQL query to remove explanations and formatting.
+    Keeps only the executable SQL code.
+    """
+    # Remove markdown code blocks if present
+    sql_query = sql_query.replace("```sql", "").replace("```", "")
+    
+    # Remove common introductory phrases
+    prefixes = [
+        "here is the sql query:",
+        "the sql query is:",
+        "sql query:",
+        "here's the query:"
+    ]
+    
+    for prefix in prefixes:
+        if sql_query.lower().startswith(prefix):
+            sql_query = sql_query[len(prefix):]
+    
+    # Remove leading/trailing whitespace and ensure semicolon at end
+    sql_query = sql_query.strip()
+    if not sql_query.endswith(';'):
+        sql_query += ';'
+        
+    return sql_query
