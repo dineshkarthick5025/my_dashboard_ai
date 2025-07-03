@@ -1,22 +1,21 @@
 import re
 from app.models.user_connection import UserConnection
-import psycopg
-import mysql.connector
-import pyodbc
-import oracledb
 from sqlalchemy.orm import Session
 from openai import OpenAI
 from dotenv import load_dotenv
 import os
+from app.generate_helper import clean_sql
+import json
+from decimal import Decimal
+from datetime import date, datetime
+import json
+import re
+
 
 load_dotenv()  # Load from .env
 api_key = os.getenv("DEEPSEEK_API_KEY")
 
 client = OpenAI(api_key=api_key)
-
-import json
-from decimal import Decimal
-from datetime import date, datetime
 
 class DecimalEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -26,44 +25,12 @@ class DecimalEncoder(json.JSONEncoder):
             return obj.isoformat()
         return super().default(obj)
 
-def clean_sql(raw_sql: str, as_single_line: bool = False) -> str:
-    """
-    Cleans an LLM-generated SQL string by removing markdown, explanations, and formatting.
-
-    Args:
-        raw_sql (str): Raw output from LLM containing SQL and possibly descriptions.
-        as_single_line (bool): Whether to return the query in one line.
-
-    Returns:
-        str: Cleaned SQL query.
-    """
-    # Remove markdown
-    cleaned = raw_sql.replace("```sql", "").replace("```", "").strip()
-
-    # Split into lines and find where actual SQL starts (e.g., SELECT, WITH, INSERT, etc.)
-    lines = cleaned.splitlines()
-    sql_start_keywords = ("SELECT", "WITH", "INSERT", "UPDATE", "DELETE", "CREATE", "DROP")
-    
-    for i, line in enumerate(lines):
-        if line.strip().upper().startswith(sql_start_keywords):
-            sql_lines = lines[i:]
-            break
-    else:
-        sql_lines = lines  # fallback if no keyword found
-
-    cleaned_sql = "\n".join(sql_lines).strip()
-
-    if as_single_line:
-        cleaned_sql = " ".join(cleaned_sql.split())
-
-    return cleaned_sql
-
 
 def generate_sql_from_prompt(user_prompt, schema_description, database_type):
     print(database_type)
     """
     Converts natural language questions to raw SQL queries using LLM via RunPod.
-    
+
     Args:
         user_prompt (str): User's question in plain English.
         schema_description (str): Database table/column schema.
@@ -84,8 +51,12 @@ given the schema and user question.
 ### INSTRUCTIONS ###
 - Generate ONLY the SQL query.
 - DO NOT include explanations, comments, markdown formatting, or any intro like "Here's your query".
-- Ensure the SQL follows {database_type} syntax precisely, go with query which you think will definitely work.
+- Ensure the SQL follows {database_type} syntax precisely.
+- For **PostgreSQL**, always wrap table names and column names with double quotes (e.g., "ProductName").
+- Respect case-sensitivity exactly as shown in the schema.
+- Do not make up columns or tables not present in the schema.
 - If filters, conditions, or joins are needed, infer them from the schema and question.
+- Use aliases or aggregations where relevant.
 
 ### QUESTION ###
 {user_prompt}
@@ -103,49 +74,9 @@ given the schema and user question.
     )
 
     # Extract only SQL from response
-    #if sqlsquery startswith("Here's the SQL query to retrieve") remove content till /n
-    sqlquery= clean_sql(sqlquery.choices[0].message.content.strip())
+    sqlquery = clean_sql(sqlquery.choices[0].message.content.strip())
     return sqlquery
-    #return sqlquery.choices[0].message.content.strip().removeprefix("```sql").removesuffix("```").strip()
 
-
-
-def detect_chart_type(prompt: str) -> str:
-    """
-    Detects a chart or analysis type from the user prompt.
-
-    Returns:
-        A human-readable label like "Bar Graph", "Pie Chart", "AI Report"
-
-    Raises:
-        ValueError if no match or multiple matches are found.
-    """
-
-    chart_patterns = {
-        "Bar Graph": r"\bbar[\s-]?(graph|chart)\b",
-        "Line Graph": r"\bline[\s-]?(graph|chart)\b",
-        "Pie Chart": r"\bpie[\s-]?chart\b",
-        "Scatter Plot": r"\bscatter[\s-]?plot\b",
-        "AI Report": r"\b(ai[\s-]?(analysis|report|insight)|machine learning|intelligent summary|ai[\s-]?generated[\s-]?(report|analysis)|report)\b"
-
-    }
-
-    matches = [label for label, pattern in chart_patterns.items()
-               if re.search(pattern, prompt, re.IGNORECASE)]
-    print(f"Detected matches: {matches}")  # Debugging output
-
-    if len(matches) == 0:
-        raise ValueError("No known chart or analysis type found in the prompt.")
-    elif len(matches) > 1:
-        raise ValueError(f"Multiple chart types detected: {', '.join(matches)}. Please specify only one.")
-
-    return matches[0]
-
-
-
-
-import json
-import re
 
 def generate_echarts_config(user_prompt, results, chart_type):
     """
@@ -236,6 +167,7 @@ def generate_forecast_config(user_prompt, forecast_result, chart_type="line"):
     """
     Generates minimal forecast visualization config in exact requested format.
     """
+    print(f"Generating forecast config for prompt: {user_prompt}")
     x_axis_data = []
     historical_data = []
     forecast_data = []
@@ -298,25 +230,6 @@ Respond with ONLY the intent name, no explanations.
 
     return intent
 
-def summarize_anomalies_with_llm(anomalies, user_prompt):
-    prompt = f"""
-You are a data assistant.
-Task: Summarize the anomalies found in this dataset based on the user's request.
-User Request: {user_prompt}
-Anomalies Data: {anomalies}
-
-Provide a simple, user-friendly summary.
-"""
-
-    response = client.chat.completions.create(
-        model="gpt-4.1",
-        messages=[{"role": "user", "content": prompt}]
-    )
-
-    return response.choices[0].message.content.strip()
-
-
-
 
 
 
@@ -374,31 +287,3 @@ def generate_sql_from_prompt_for_prophet(prompt, schema, db_type):
         return clean_sql(prophet_wrapper)
     
     return base_sql
-
-
-def clean_sql(sql_query):
-    """
-    Cleans SQL query to remove explanations and formatting.
-    Keeps only the executable SQL code.
-    """
-    # Remove markdown code blocks if present
-    sql_query = sql_query.replace("```sql", "").replace("```", "")
-    
-    # Remove common introductory phrases
-    prefixes = [
-        "here is the sql query:",
-        "the sql query is:",
-        "sql query:",
-        "here's the query:"
-    ]
-    
-    for prefix in prefixes:
-        if sql_query.lower().startswith(prefix):
-            sql_query = sql_query[len(prefix):]
-    
-    # Remove leading/trailing whitespace and ensure semicolon at end
-    sql_query = sql_query.strip()
-    if not sql_query.endswith(';'):
-        sql_query += ';'
-        
-    return sql_query
