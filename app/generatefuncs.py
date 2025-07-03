@@ -14,7 +14,17 @@ api_key = os.getenv("DEEPSEEK_API_KEY")
 
 client = OpenAI(api_key=api_key)
 
+import json
+from decimal import Decimal
+from datetime import date, datetime
 
+class DecimalEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, Decimal):
+            return float(obj)
+        elif isinstance(obj, (datetime, date)):
+            return obj.isoformat()
+        return super().default(obj)
 
 def clean_sql(raw_sql: str, as_single_line: bool = False) -> str:
     """
@@ -220,6 +230,34 @@ Please use chart labels in the language of the user prompt.
     except json.JSONDecodeError as e:
         print("[ERROR] Failed to parse JSON from model response:", e)
         return {}
+    
+
+def generate_forecast_config(user_prompt, forecast_result, chart_type="line"):
+    """
+    Generates minimal forecast visualization config in exact requested format.
+    """
+    x_axis_data = []
+    historical_data = []
+    forecast_data = []
+    
+    for item in forecast_result:
+        date_str = item['date'].strftime('%Y-%m-%d')
+        value = float(item['value']) if isinstance(item['value'], Decimal) else item['value']
+        
+        x_axis_data.append(date_str)
+        if item['type'] == 'historical':
+            historical_data.append(value)
+        else:
+            forecast_data.append(value)
+    
+    return {
+        "title": f"Forecast: {user_prompt[:50]}..." if len(user_prompt) > 50 else user_prompt,
+        "xAxisData": x_axis_data,
+        "seriesData": [
+            {"name": "Historical", "type": "line", "data": historical_data},
+            {"name": "Forecast", "type": "line", "data": forecast_data}
+        ]
+    }
 
 def classify_intent_with_llm(user_prompt):
     """

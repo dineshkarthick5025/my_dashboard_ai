@@ -8,7 +8,7 @@ from app.session_connection import session_conn_manager
 from app.models.query_history import QueryHistory
 from app.models.user import User
 import re
-from app.generatefuncs import classify_intent_with_llm, summarize_anomalies_with_llm, generate_sql_from_prompt_for_prophet
+from app.generatefuncs import classify_intent_with_llm, summarize_anomalies_with_llm, generate_sql_from_prompt_for_prophet, generate_forecast_config
 
 router = APIRouter()
 
@@ -109,31 +109,55 @@ def run_prediction(data, user_prompt):
     return predictions.to_dict(orient='records')
 
 
+from prophet import Prophet
+import pandas as pd
+
 def run_forecasting(data, user_prompt):
     """
-    Runs time series forecasting using Prophet.
+    Runs Prophet forecasting on provided data.
 
     Args:
-        data (list of dicts): Transformed SQL result with 'date' and 'value' columns
+        data (list of dict): List with 'ds' and 'y' keys.
+        user_prompt (str): Optional user prompt for logging/debugging.
 
     Returns:
-        list of dicts: Forecasted results
+        dict: Contains historical and forecasted data for line chart.
     """
-    import pandas as pd
-    from prophet import Prophet
-    print("data given to forcast",data)
-    df = pd.DataFrame(data)
+    try:
+        df = pd.DataFrame(data)
+        df['ds'] = pd.to_datetime(df['ds'])
+        
+        model = Prophet()
+        model.fit(df)
+
+        # Forecast 30 future periods (you can customize this)
+        future = model.make_future_dataframe(periods=30)
+        forecast = model.predict(future)
+
+        # Prepare historical data
+        historical_data = df[['ds', 'y']].rename(columns={'ds': 'date', 'y': 'value'})
+        historical_data['type'] = 'historical'
+
+        # Prepare forecasted data
+        forecast_data = forecast[['ds', 'yhat']].rename(columns={'ds': 'date', 'yhat': 'value'})
+        forecast_data = forecast_data[forecast_data['date'] > df['ds'].max()]
+        forecast_data['type'] = 'forecast'
+
+        # Combine for chart
+        combined_data = pd.concat([historical_data, forecast_data])
+
+        chart_data = combined_data.to_dict(orient='records')
+
+        #print(f"✅ [DEBUG] Forecasting successful: {(chart_data)} records generated")
+        return chart_data
     
-    # Assuming 'date' and 'value' columns exist
-    df.rename(columns={'date': 'ds', 'value': 'y'}, inplace=True)
-
-    model = Prophet()
-    model.fit(df)
-
-    future = model.make_future_dataframe(periods=30)
-    forecast = model.predict(future)
-
-    return forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']].tail(30).to_dict(orient='records')
+    
+    except Exception as e:
+        print(f"❌ [ERROR] Forecasting failed: {e}")
+        return {
+            "error": "Forecasting failed",
+            "details": str(e)
+        }
 
 
 
@@ -265,26 +289,46 @@ async def generate_dashboard(
 
     # 🔥 NEW STEP: Let LLM classify the user's intent
     intent = classify_intent_with_llm(prompt)  # e.g., "visualization", "anomaly_detection", etc.
+
+    cursor = conn.cursor()
     
     # For most intents, SQL is still needed
     if intent=="visualization":
         sql_query = generate_sql_from_prompt(prompt, schema, db_type)
         print(f"📝 [DEBUG] Generated SQL: {sql_query}")
+        try:
+            cursor.execute(sql_query)
+            rows = cursor.fetchall()
+            columns = [desc[0] for desc in cursor.description]
+            transformed_data = transform_sql_result_to_llm_json(columns, rows)
+            print(f"✅ [DEBUG] Transformed Data: {transformed_data}")
+        except Exception as e:
+            print(f"❌ [ERROR] SQL Execution Failed: {e}")
+            save_query_history(db, current_user, prompt, sql_query, "failed", None)
+            return JSONResponse(status_code=500, content={"error": "SQL execution failed"})
+        
     elif intent == "forecasting":
         sql_query_forcast = generate_sql_from_prompt_for_prophet(prompt, schema, db_type)
-        print(f"📝 [DEBUG] Generated SQL for forecasting: {sql_query}")
+        print(f"📝 [DEBUG] Generated SQL for forecasting: {sql_query_forcast}")
+        try:
+            cursor.execute(sql_query_forcast)
+            rows = cursor.fetchall()
+            columns = [desc[0] for desc in cursor.description]
+            
+            # Convert rows to list of dicts for easy processing
+            data = [dict(zip(columns, row)) for row in rows]
 
-    cursor = conn.cursor()
-    try:
-        cursor.execute(sql_query)
-        rows = cursor.fetchall()
-        columns = [desc[0] for desc in cursor.description]
-        transformed_data = transform_sql_result_to_llm_json(columns, rows)
-        print(f"✅ [DEBUG] Transformed Data: {transformed_data}")
-    except Exception as e:
-        print(f"❌ [ERROR] SQL Execution Failed: {e}")
-        save_query_history(db, current_user, prompt, sql_query, "failed", None)
-        return JSONResponse(status_code=500, content={"error": "SQL execution failed"})
+            # Prophet expects two columns: 'ds' for datetime and 'y' for target value
+            # Assuming your SQL query already returns columns with these names
+            prophet_data = [{"ds": row["ds"], "y": row["y"]} for row in data]
+
+            print(f"✅ [DEBUG] Data for Prophet: {prophet_data}")
+
+        except Exception as e:
+            print(f"❌ [ERROR] SQL Execution for forecasting Failed: {e}")
+            save_query_history(db, current_user, prompt, sql_query_forcast, "failed", None)
+            return JSONResponse(status_code=500, content={"error": "SQL execution for forecasting failed"})
+
 
     # 🔥 NEW STEP: Based on intent, apply respective logic
     status = "success"
@@ -299,22 +343,22 @@ async def generate_dashboard(
         }
 
     elif intent == "forecasting":
-        forecast_result = run_forecasting(transformed_data, prompt)
+        forecast_result = run_forecasting(prophet_data, prompt)
         output_format = detect_output_format(prompt)
-
+        print(f"✅ [DEBUG] Forecast Result: {forecast_result}")
+        chart_type = "line"  # Forecasts are typically shown as line charts
+        echarts_config = generate_forecast_config(prompt, forecast_result, chart_type)
+        
         result_payload = {
-            "forecast": forecast_result,
-            "output_format": output_format
+            "chart_type": chart_type,
+            "echarts_config": echarts_config
         }
-
-        if output_format in ["visual", "both"]:
-            chart_type = "line"  # Forecasts are usually line charts
-            echarts_config = generate_echarts_config(prompt, forecast_result, chart_type)
-            result_payload["echarts_config"] = echarts_config
 
 
     else:
         return JSONResponse(status_code=400, content={"error": "Unrecognized intent"})
+    
+    sql_query = sql_query if intent == "visualization" else sql_query_forcast
 
     # Save successful query
     save_query_history(db, current_user, prompt, sql_query, status, result_payload)
