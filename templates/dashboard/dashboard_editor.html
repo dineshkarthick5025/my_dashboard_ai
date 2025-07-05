@@ -5,6 +5,7 @@
   <title>Dashboard Editor</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <link rel="stylesheet" href="/static/css/dashboard_editor.css">
 </head>
 <body>
@@ -25,17 +26,19 @@
       </div>
       <br>
       <label for="canvas-size">Canvas Size:</label>
-      <select id="canvas-size" onchange="handleCanvasSizeChange()">
+      <select id="canvas-size">
         <option value="a4">A4 (595x842 px)</option>
         <option value="a3">A3 (842x1191 px)</option>
         <option value="custom">Custom</option>
       </select>
 
+      <!-- Inside tools-panel custom size apply -->
       <div id="custom-size-inputs" style="display: none; margin-top: 8px;">
         <input type="number" id="custom-width" placeholder="Width (px)" />
         <input type="number" id="custom-height" placeholder="Height (px)" />
-        <button onclick="applyCustomSize()">Apply</button>
+        <button id="applyCustomSizeBtn">Apply</button>
       </div>
+
       <div id="chartCustomControls" style="margin-top: 20px;"></div>
     </div>
 
@@ -77,7 +80,9 @@
       {% endfor %}
     </select>
     <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-    <button onclick="generateDashboard()">Generate Dashboard</button>
+    <!-- Inside sidebar-right generate dashboard button -->
+    <button id="generateDashboardBtn">Generate Dashboard</button>
+
   </div>
 </div>
 
@@ -95,17 +100,37 @@
 </div>
 
 {% block scripts %}
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="/static/js/dashboard_editor.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  {% if dashboard_data %}
-  restoreDashboardFromData({{ dashboard_data | tojson | safe }});
-  {% endif %}
-});
-</script>
-{% endblock %}
+  <!-- Load state.js first since other modules depend on it -->
+  <script type="module" src="/static/js/dashboard/state.js"></script>
+  <script type="module" src="/static/js/dashboard/core.js"></script>
+  <script type="module" src="/static/js/dashboard/drag_resize.js"></script>
+  <script type="module" src="/static/js/dashboard/helper.js"></script>
+  <script type="module" src="/static/js/dashboard/render_chart.js"></script>
+  <script type="module" src="/static/js/dashboard/restore.js"></script>
+  <script type="module" src="/static/js/dashboard/save.js"></script>
+  <script type="module" src="/static/js/dashboard/widget_manager.js"></script>
+
+  <script type="module">
+    import { dashboardState } from '/static/js/dashboard/state.js';
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      {% if dashboard_data %}
+      // Initialize state
+      dashboardState.isInitialServerLoad = true;
+      
+      // Clear any existing session data
+      sessionStorage.removeItem('widgets');
+      sessionStorage.removeItem('canvasSize');
+      
+      // Restore from server data
+      restoreDashboardFromData({{ dashboard_data | tojson | safe }});
+      
+      // Update state after restoration
+      dashboardState.isInitialServerLoad = false;
+      {% endif %}
+    });
+  </script>
+  {% endblock %}
 
 </body>
 </html>
