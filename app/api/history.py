@@ -23,5 +23,5 @@ async def history_tab(request: Request, db: Session = Depends(get_db), current_u
         """), {"user_id": current_user.id}
     ).fetchall()
 
-    return templates.TemplateResponse("dashboard/history_tab.html", {"request": request, "history": history})
+    return templates.TemplateResponse("dashboard/history_tab.html", {"request": request, "history": history, "active_page": "history"})
 

@@ -18,13 +18,11 @@
       <h3>Tools</h3>
       <a href="/dashboard/bidashboard" class="exit-editor-btn">⏪</a>
       <button class="save-btn">💾</button>
-      <br><br>
       <div class="zoom-bar">
         <label for="zoomRange">Zoom:</label><br>
         <input type="range" id="zoomRange" min="50" max="200" value="100" />
         <span id="zoomValue">100%</span>
       </div>
-      <br>
       <label for="canvas-size">Canvas Size:</label>
       <select id="canvas-size">
         <option value="a4">A4 (595x842 px)</option>
@@ -50,8 +48,6 @@
     <div class="scroll-buffer">
       <div id="zoomWrapper">
         <div class="canvas" id="dashboardCanvas">
-          <div id="v-guide" class="guide-line vertical"></div>
-          <div id="h-guide" class="guide-line horizontal"></div>
         </div>
       </div>
     </div>
@@ -79,7 +75,6 @@
       <option value="{{ db }}">{{ db }}</option>
       {% endfor %}
     </select>
-    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
     <!-- Inside sidebar-right generate dashboard button -->
     <button id="generateDashboardBtn">Generate Dashboard</button>
 

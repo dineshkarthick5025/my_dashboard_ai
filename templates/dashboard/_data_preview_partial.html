@@ -1,0 +1,20 @@
+{% for db in previews_by_db %}
+  <div class="db-section">
+    <div class="db-header">
+      <span class="db-icon">➕ 📂</span>
+      <span class="db-name">{{ db.db_name }}</span>
+    </div>
+    <div class="tables-grid">
+      {% for table in db.tables %}
+      <div class="table-box">
+        <div class="table-box-header">
+          <strong>{{ table.name }}</strong>
+        </div>
+        <div class="table-content">
+          {{ table.html | safe }}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endfor %}

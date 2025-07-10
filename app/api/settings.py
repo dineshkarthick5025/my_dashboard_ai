@@ -8,4 +8,4 @@ templates = Jinja2Templates(directory="templates")
 
 @router.get("/dashboard/settings", response_class=HTMLResponse)
 async def settings_tab(request: Request):
-    return templates.TemplateResponse("dashboard/settings_tab.html", {"request": request})
+    return templates.TemplateResponse("dashboard/settings_tab.html", {"request": request, "active_page": "settings"})

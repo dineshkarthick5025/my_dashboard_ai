@@ -1,13 +1,17 @@
 {% extends "dashboard.html" %}
 
 {% block content %}
-<h2>Welcome to the Dashboard</h2>
-<p>This is the Dashboard section.</p>
 
-<!-- New Dashboard Button -->
-<a href="/dashboardeditor" class="new-dashboard-btn">➕ New Dashboard</a>
+<!-- Top Control Bar -->
+<div class="top-controls">
+  <input type="text" placeholder="search Dashboard" class="dashboard-search" />
+  <div class="button-group">
+    <a href="/dashboardeditor" class="new-dashboard-btn">New Dashboard +</a>
+    <button class="ask-ai-btn">Ask AI</button>
+  </div>
+</div>
 
-<!-- Thumbnails Section -->
+<!-- Dashboard Grid Section -->
 <div id="dashboardList" class="thumbnail-grid">
   {% for dash in dashboards %}
   <div class="dashboard-thumbnail">
@@ -18,22 +22,20 @@
         <button onclick="deleteDashboard({{ dash.id }})">🗑️</button>
       </div>
     </div>
-    
     <div class="thumbnail-preview">
       {% if dash.thumbnail %}
-        <img src="{{ dash.thumbnail }}" alt="Dashboard Thumbnail" style="width: 100%; height: auto;" />
+        <img src="{{ dash.thumbnail }}" alt="Dashboard Thumbnail" />
       {% else %}
         <p>No preview available</p>
       {% endif %}
     </div>
-
   </div>
   {% endfor %}
 </div>
+
 {% endblock %}
 
 {% block scripts %}
-<link rel="stylesheet" href="/static/css/bidashboard_tab.css">
+<link rel="stylesheet" href="/static/css/bi_dashboard_tab.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="/static/js/bidashboard_tab.js"></script>
 {% endblock %}

@@ -26,9 +26,13 @@ async def data_tab(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
+    if not current_user:
+        return RedirectResponse("/login?msg=session-expired")
+    
     return templates.TemplateResponse("dashboard/data_tab.html", {
         "request": request,
-        "message": message
+        "message": message,
+        "active_page": "data"
     })
 
 
@@ -102,21 +106,17 @@ async def get_data_previews(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
+    if not current_user:
+        return RedirectResponse("/login?msg=session-expired", status_code=303)
+
     previews_by_db = []
     connections = db.query(UserConnection).filter_by(user_id=current_user.id).all()
 
     for conn in connections:
         try:
-            # Encode credentials to handle special characters like @, /, :, etc.
             username = quote_plus(conn.username)
             password = quote_plus(conn.get_decrypted_password())
-            host = conn.host
-            port = conn.port
-            database = conn.database
-            sslmode = conn.sslmode
-
-            # Construct the engine URL safely
-            engine_url = f"postgresql://{username}:{password}@{host}:{port}/{database}?sslmode={sslmode}"
+            engine_url = f"postgresql://{username}:{password}@{conn.host}:{conn.port}/{conn.database}?sslmode={conn.sslmode}"
             engine = create_engine(engine_url)
 
             inspector = inspect(engine)
@@ -147,7 +147,8 @@ async def get_data_previews(
                 "tables": [{"name": "Error", "html": f"<p>Connection failed: {e}</p>"}]
             })
 
-    return templates.TemplateResponse("dashboard/data_tab_content.html", {
+    return templates.TemplateResponse("dashboard/_data_preview_partial.html", {
         "request": request,
         "previews_by_db": previews_by_db
     })
+

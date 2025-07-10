@@ -20,18 +20,20 @@ async function loadPreviews(showLoading = true) {
   }
 
   try {
-    const res = await fetch("/dashboard/data/previews");
-    if (!res.ok) throw new Error("Failed to fetch previews");
+    const res = await fetch("/dashboard/data/previews", {
+      credentials: "include",
+    });
 
     const html = await res.text();
 
-    // Basic sanity check: detect if user got redirected to login page
-    if (html.includes("<form") && html.includes("password")) {
-      previewSection.innerHTML = `<p style="color:red;">Session expired. Please <a href='/login'>log in</a> again.</p>`;
-    } else {
-      sessionStorage.setItem("table_previews", html);
-      previewSection.innerHTML = html;
+    // Check if redirected to login (best effort)
+    if (res.redirected || res.url.includes("/login")) {
+      window.location.href = res.url;
+      return;
     }
+
+sessionStorage.setItem("table_previews", html);
+previewSection.innerHTML = html;
 
   } catch (err) {
     previewSection.innerHTML = `<p style="color:red;">Failed to load previews</p>`;

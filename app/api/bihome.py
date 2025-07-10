@@ -24,7 +24,8 @@ async def bihome_tab(request: Request, db: Session = Depends(get_db), current_us
         {
             "request": request,
             "first_name": current_user.first_name,
-            "recent_dashboards": recent_dashboards
+            "recent_dashboards": recent_dashboards,
+            "active_page": "bihome"
         }
     )
 

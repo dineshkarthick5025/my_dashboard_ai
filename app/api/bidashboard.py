@@ -35,6 +35,7 @@ async def bihome_tab(request: Request, db: Session = Depends(get_db)):
         {
             "request": request,
             "dashboards": dashboards,
-            "cache_bust": datetime.utcnow().timestamp()
+            "cache_bust": datetime.utcnow().timestamp(),
+            "active_page": "bidashboard"
         }
     )
