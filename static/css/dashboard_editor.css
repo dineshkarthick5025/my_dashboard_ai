@@ -17,11 +17,12 @@ html, body {
 .tools-panel {
   display: flex;
   flex-direction: column;
-  width: 280px; /* increased from 160px */
-  min-width: 250px; /* prevent collapse */
+  width: 350px;
+  min-width: 320px;
   background-color: #f5f5f5;
   border-right: 1px solid #ccc;
-  overflow: hidden;
+  overflow-y: auto;         /* ✅ Enables vertical scroll */
+  max-height: 100vh;        /* ✅ Prevents overflow beyond screen */
 }
 
 .top-toolbar {
@@ -80,7 +81,7 @@ html, body {
 
 /* ---------- RIGHT SIDEBAR ---------- */
 .sidebar-right {
-  width: 300px;
+  width: 350px;
   background-color: #fafafa;
   padding: 15px;
   box-shadow: -2px 0 5px rgba(0,0,0,0.1);
@@ -103,7 +104,7 @@ html, body {
 }
 
 #dashboardPrompt {
-  width: 100%;
+  width: 95%;
   height: 150px;
   resize: none;
   padding: 10px;

@@ -81,4 +81,51 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+.logout-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+  text-decoration: none;
+  cursor: pointer;
+  height: 48px; /* Increased height */
+  width: 48px;  /* Increased width */
+}
 
+
+.logout-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  vertical-align: middle;
+}
+
+.logout-btn:hover .logout-icon {
+  background-color: #ffffff;
+}
+
+
+.profile-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  height: 44px;
+  width: 44px;
+  transition: background-color 0.3s ease;
+}
+
+.profile-btn:hover {
+  background-color: #ffffff;
+}
+
+.profile-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
