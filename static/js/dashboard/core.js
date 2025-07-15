@@ -7,6 +7,13 @@ import { dashboardState } from './state.js';
 
 // Updated generateDashboard function
 async function generateDashboard() {
+  const generateBtn = document.getElementById('generateDashboardBtn');
+  const originalText = generateBtn.innerHTML;
+
+  // Disable button and show loading
+  generateBtn.disabled = true;
+  generateBtn.innerHTML = `<span class="btn-icon">⏳</span> Generating...`;
+
   const prompt = document.getElementById('dashboardPrompt').value.trim();
   const db_id = document.getElementById('db-select').value;
   const chart_type = document.getElementById('chart-type').value;
@@ -34,27 +41,21 @@ async function generateDashboard() {
     console.log('Dashboard generation result:', result);
 
     if (result.status === 'success') {
-
       const intent = result.intent;
-      const outputFormat = result.output_format || 'visual'; // For forecasting intent only
+      const outputFormat = result.output_format || 'visual';
 
       if (intent === 'forecasting') {
-        
         if (outputFormat === 'visual' || outputFormat === 'both') {
           renderChartToCanvas(result.echarts_config, "line");
         }
-
         if (outputFormat === 'text' || outputFormat === 'both') {
           renderTextOutput(result.forecast);
         }
-
       } else if (intent === 'visualization') {
         renderChartToCanvas(result.echarts_config, result.chart_type);
-
       } else {
         alert('Unsupported intent. Please try again.');
       }
-
     } else {
       alert('Dashboard generation failed. Please try again.');
     }
@@ -62,6 +63,10 @@ async function generateDashboard() {
   } catch (error) {
     console.error('Error generating dashboard:', error);
     alert('Something went wrong.');
+  } finally {
+    // Restore button state
+    generateBtn.disabled = false;
+    generateBtn.innerHTML = originalText;
   }
 }
 
