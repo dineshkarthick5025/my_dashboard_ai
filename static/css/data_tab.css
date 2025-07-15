@@ -209,7 +209,7 @@ button {
   padding: 15px;
   border: 1px solid #ddd;
   border-radius: 8px;
-  background: #fdfdfd;
+  background: #d4e7fe
 }
 
 
@@ -338,3 +338,34 @@ button {
   transform: translateY(-2px);
 }
 
+.spinner-overlay {
+  position: relative; /* Changed from fixed to relative */
+  width: 100%;
+  height: 200px; /* Give it some height */
+  background: rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+  margin: 20px 0;
+}
+
+.spinner {
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #4B3797;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 15px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+#previewContent {
+  transition: opacity 0.3s ease;
+}

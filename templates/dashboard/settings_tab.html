@@ -1,4 +1,71 @@
+<!-- Frontend Template (settings_tab.html) -->
 {% extends "dashboard.html" %}
-{% block content %}
 
+{% block content %}
+<div class="settings-wrapper">
+    <div class="settings-container">
+        <h2 class="settings-title">Account Settings</h2>
+        <form id="settingsForm" class="settings-form">
+            <!-- Username Field -->
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" 
+                       value="{{ user_data.username }}" readonly
+                       class="readonly-field">
+            </div>
+            
+            <!-- Email Field -->
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email"
+                       value="{{ user_data.email }}" readonly
+                       class="readonly-field">
+            </div>
+            
+            <!-- First Name Field -->
+            <div class="form-group">
+                <label for="first_name">First Name</label>
+                <input type="text" id="first_name" name="first_name"
+                       value="{{ user_data.first_name }}"
+                       placeholder="Enter your first name">
+            </div>
+            
+            <!-- Last Name Field -->
+            <div class="form-group">
+                <label for="last_name">Last Name</label>
+                <input type="text" id="last_name" name="last_name"
+                       value="{{ user_data.last_name }}"
+                       placeholder="Enter your last name">
+            </div>
+            
+            <!-- Password Field -->
+            <div class="form-group">
+                <label for="password">New Password</label>
+                <input type="password" id="password" name="password"
+                       placeholder="Enter new password (leave blank to keep current)">
+                <small class="form-hint">Minimum 8 characters</small>
+            </div>
+            
+            <!-- Confirm Password Field -->
+            <div class="form-group">
+                <label for="confirm_password">Confirm Password</label>
+                <input type="password" id="confirm_password" name="confirm_password"
+                       placeholder="Confirm new password">
+            </div>
+            
+            <!-- Submit Button -->
+            <button type="submit" id="saveBtn" class="btn-save">
+                <span class="btn-icon">💾</span> Save Changes
+            </button>
+            
+            <!-- Status Message -->
+            <div id="statusMsg" class="status-msg"></div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<link rel="stylesheet" href="/static/css/settings.css">
+<script src="/static/js/settings.js"></script>
 {% endblock %}

@@ -1,82 +1,83 @@
-async function loadPreviews(showLoading = true) {
-  const previewSection = document.getElementById("preview-section");
-  const refreshBtn = document.getElementById("refreshPreviewsBtn");
-  const spinner = document.getElementById("loadingSpinner");
-
-  if (!previewSection) return;
-
-  if (showLoading) {
-    spinner.style.display = "inline";
-    if (refreshBtn) refreshBtn.disabled = true;
-  }
-
-  // Use cached version if not explicitly asked to refresh
-  const cached = sessionStorage.getItem("table_previews");
-  if (cached && !showLoading) {
-    previewSection.innerHTML = cached;
-    spinner.style.display = "none";
-    if (refreshBtn) refreshBtn.disabled = false;
-    return;
-  }
-
-  try {
-    const res = await fetch("/dashboard/data/previews", {
-      credentials: "include",
-    });
-
-    const html = await res.text();
-
-    // Check if redirected to login (best effort)
-    if (res.redirected || res.url.includes("/login")) {
-      window.location.href = res.url;
-      return;
-    }
-
-sessionStorage.setItem("table_previews", html);
-previewSection.innerHTML = html;
-
-  } catch (err) {
-    previewSection.innerHTML = `<p style="color:red;">Failed to load previews</p>`;
-  } finally {
-    spinner.style.display = "none";
-    if (refreshBtn) refreshBtn.disabled = false;
-  }
-}
-
 document.addEventListener("DOMContentLoaded", () => {
-  // Load from cache or fetch on first visit
-  loadPreviews(false);
-
+  const spinner = document.getElementById("loadingSpinner");
+  const previewContent = document.getElementById("previewContent");
+  
+  // Initial load - show spinner, hide content
+  spinner.style.display = "flex";
+  previewContent.style.display = "none";
+  
+  // Try to load from cache first
+  const cachedContent = sessionStorage.getItem("cachedPreviews");
+  if (cachedContent) {
+    previewContent.innerHTML = cachedContent;
+    previewContent.style.display = "block";
+    spinner.style.display = "none";
+  }
+  
+  // Then load fresh data (but don't show spinner if we had cache)
+  loadPreviews(!cachedContent);
+  
+  // Refresh button handler - will force fresh load
   const refreshBtn = document.getElementById("refreshPreviewsBtn");
   if (refreshBtn) {
     refreshBtn.addEventListener("click", () => {
-      sessionStorage.removeItem("table_previews");
+      // Clear cache and force fresh load
+      sessionStorage.removeItem("cachedPreviews");
       loadPreviews(true);
     });
   }
 });
 
+async function loadPreviews(showLoading = true) {
+  const previewContent = document.getElementById("previewContent");
+  const refreshBtn = document.getElementById("refreshPreviewsBtn");
+  const spinner = document.getElementById("loadingSpinner");
 
-document.getElementById('refreshPreviewsBtn').addEventListener('click', () => {
-  
-  const loader = document.getElementById('loadingSpinner');
-  const previewContent = document.getElementById('previewContent');
+  if (showLoading) {
+    spinner.style.display = "flex";
+    previewContent.style.display = "none";
+    if (refreshBtn) refreshBtn.disabled = true;
+  }
 
-  loader.style.display = 'flex';
-  previewContent.style.display = 'none';
+  try {
+    const res = await fetch("/dashboard/data/previews", {
+      credentials: "include",
+      headers: {
+        // Add cache-control header if you want to control caching
+        'Cache-Control': 'no-cache'
+      }
+    });
 
-  // Simulate loading, replace with real fetch
-  setTimeout(() => {
-    loader.style.display = 'none';
-    previewContent.innerHTML = "<p>✅ Previews loaded successfully!</p>";
-    previewContent.style.display = 'block';
-  }, 2000);
+    if (res.redirected) {
+      window.location.href = res.url;
+      return;
+    }
 
-});
-
-
-
-
-
-
-
+    const html = await res.text();
+    
+    // Cache the response
+    sessionStorage.setItem("cachedPreviews", html);
+    
+    previewContent.innerHTML = html;
+    previewContent.style.display = "block";
+    
+  } catch (err) {
+    // Try to show cached content if available
+    const cachedContent = sessionStorage.getItem("cachedPreviews");
+    if (cachedContent) {
+      previewContent.innerHTML = cachedContent;
+      previewContent.style.display = "block";
+    } else {
+      previewContent.innerHTML = `
+        <div class="error-message">
+          <p>⚠️ Failed to load previews. Please try again.</p>
+          <button onclick="loadPreviews(true)">Retry</button>
+        </div>
+      `;
+      previewContent.style.display = "block";
+    }
+  } finally {
+    spinner.style.display = "none";
+    if (refreshBtn) refreshBtn.disabled = false;
+  }
+}

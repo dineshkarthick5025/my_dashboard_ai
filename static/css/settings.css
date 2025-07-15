@@ -1,0 +1,106 @@
+/* Base font */
+body {
+  font-family: 'Montserrat', sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* disable scrolling */
+}
+
+/* Full screen wrapper minus header height (60px) */
+.settings-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 60px);  /* take fixed header into account */    /* sidebar width */
+  background: #ffffff;
+  overflow: hidden;
+}
+
+/* Main form container */
+.settings-container {
+  background: white;
+  padding: 30px 25px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  overflow-y: auto; /* allows internal scroll if needed */
+  max-height: 100%; /* prevents overflow out of viewport */
+}
+
+.settings-title {
+  font-size: 22px;
+  font-weight: bold;
+  color: #0C1E80;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-weight: 600;
+  font-size: 14px;
+  color: #261C91;
+  margin-bottom: 6px;
+}
+
+input {
+  padding: 10px;
+  font-size: 14px;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+input:focus {
+  outline: none;
+  border-color: #261C91;
+}
+
+.readonly-field {
+  background-color: #f1f3ff;
+  cursor: not-allowed;
+}
+
+.form-hint {
+  font-size: 12px;
+  color: #888;
+  margin-top: 4px;
+}
+
+.btn-save {
+  background-color: #261C91;
+  color: white;
+  font-weight: 600;
+  padding: 12px;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-save:hover {
+  background-color: #372ea9;
+}
+
+.status-msg {
+  margin-top: 10px;
+  font-size: 14px;
+  color: green;
+  text-align: center;
+}
