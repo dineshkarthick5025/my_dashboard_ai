@@ -1,1 +1,11 @@
+# Environment and secrets
+.env
 venv/
+__pycache__/
+*.pyc
+
+# Alembic cache
+alembic/versions/
+
+# Logs and temp files
+*.log
