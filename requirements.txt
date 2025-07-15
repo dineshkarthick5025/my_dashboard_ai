@@ -16,4 +16,4 @@ pyodbc
 oracledb
 openai
 mysql-connector-python
-
+prophet
