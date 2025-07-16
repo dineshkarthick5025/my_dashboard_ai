@@ -3,7 +3,7 @@ name: Deploy to EC2 via SSH
 on:
   push:
     branches:
-      - main  # or change this if your branch name is different
+      - master  # or change this if your branch name is different
 
 jobs:
   deploy:
