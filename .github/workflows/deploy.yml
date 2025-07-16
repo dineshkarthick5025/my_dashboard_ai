@@ -22,5 +22,6 @@ jobs:
         script: |
           cd ~/my_dashboard
           git pull origin master
+          docker system prune -a -f --volumes || true
           docker-compose down
           docker-compose up -d --build
