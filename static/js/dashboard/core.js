@@ -293,7 +293,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Exit button handler
   console.log('4. Setting up exit button handler...');
-  const exitButton = document.querySelector('.exit-editor-btn');
+  const exitButton = document.querySelector('.editor-button.exit-button');
   if (exitButton) {
     exitButton.addEventListener('click', (e) => {
       console.log('Exit button clicked - clearing session and navigating away');
@@ -308,7 +308,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Optional: Clear on any page unload
   console.log('5. Setting up beforeunload handler...');
-  document.querySelector('.exit-editor-btn')?.addEventListener('click', (e) => {
+  document.querySelector('.editor-button.exit-button')?.addEventListener('click', (e) => {
     console.log('Exit button clicked - clearing session');
     clearDashboardSession();
     window.location.href = e.target.href;

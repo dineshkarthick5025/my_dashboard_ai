@@ -15,6 +15,7 @@ import re
 load_dotenv()  # Load from .env
 api_key = os.getenv("DEEPSEEK_API_KEY")
 
+
 client = OpenAI(api_key=api_key)
 
 class DecimalEncoder(json.JSONEncoder):
@@ -287,3 +288,26 @@ def generate_sql_from_prompt_for_prophet(prompt, schema, db_type):
         return clean_sql(prophet_wrapper)
     
     return base_sql
+
+def askai(user_message: str) -> str:
+    try:
+        response = client.chat.completions.create(
+            model="gpt-4.1",  # or "gpt-3.5-turbo" if needed
+            messages=[
+                {
+                    "role": "system",
+                    "content": "You are an AI assistant for data dashboard users. Answer queries clearly and helpfully."
+                },
+                {
+                    "role": "user",
+                    "content": user_message
+                }
+            ],
+            temperature=0.7
+        )
+
+        return response.choices[0].message.content.strip()
+
+    except Exception as e:
+        print("[AI ERROR]", e)
+        return "Sorry, I'm currently unable to respond."

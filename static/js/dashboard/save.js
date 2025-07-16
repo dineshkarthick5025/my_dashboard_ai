@@ -48,7 +48,7 @@ export function saveDashboardState() {
 
 export function initDashboardSaveSystem() {
   // Cache DOM elements
-  const saveBtn = document.querySelector('.save-btn');
+  const saveBtn = document.querySelector('.editor-button.save-button');
   const modal = document.getElementById('saveDashboardModal');
   const closeBtn = document.getElementById('closeSaveModal');
   const cancelBtn = document.getElementById('cancelSaveBtn');
@@ -257,3 +257,5 @@ export function getFullChartConfig(chart) {
   console.log(`✅ Extracted config for ${chart.config?.type} chart:`, config);
   return config;
 }
+
+

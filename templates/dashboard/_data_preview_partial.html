@@ -1,20 +1,29 @@
-{% for db in previews_by_db %}
-  <div class="db-section">
-    <div class="db-header">
-      <span class="db-icon">➕ 📂</span>
-      <span class="db-name">{{ db.db_name }}</span>
-    </div>
-    <div class="tables-grid">
-      {% for table in db.tables %}
-      <div class="table-box">
-        <div class="table-box-header">
-          <strong>{{ table.name }}</strong>
-        </div>
-        <div class="table-content">
-          {{ table.html | safe }}
-        </div>
-      </div>
-      {% endfor %}
-    </div>
+{% if previews_by_db|length == 0 %}
+  <div class="empty-state">
+    <p>😕 No databases connected yet.</p>
+    <button onclick="document.getElementById('dbModal').style.display='block'" class="new-data-btn">
+      ➕ Connect Database
+    </button>
   </div>
-{% endfor %}
+{% else %}
+  {% for db in previews_by_db %}
+    <div class="db-section">
+      <div class="db-header">
+        <span class="db-icon">➕ 📂</span>
+        <span class="db-name">{{ db.db_name }}</span>
+      </div>
+      <div class="tables-grid">
+        {% for table in db.tables %}
+        <div class="table-box">
+          <div class="table-box-header">
+            <strong>{{ table.name }}</strong>
+          </div>
+          <div class="table-content">
+            {{ table.html | safe }}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  {% endfor %}
+{% endif %}

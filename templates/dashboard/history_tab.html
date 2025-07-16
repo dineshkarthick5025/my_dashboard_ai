@@ -4,31 +4,37 @@
 <h2 class="query-title">Prompt History</h2>
 
 <div class="query-history-container">
-  {% for row in history %}
-  <div class="query-card">
-    <div class="query-header">
-      <div>
-        <p class="prompt-text">{{ row.prompt }}</p>
+  {% if history %}
+    {% for row in history[:20] %}
+    <div class="query-card">
+      <div class="query-header">
+        <div>
+          <p class="prompt-text">{{ row.prompt }}</p>
+        </div>
+        <button class="arrow-btn" onclick="toggleDetails({{ row.id }})">
+          ▼
+        </button>
       </div>
-      <button class="arrow-btn" onclick="toggleDetails({{ row.id }})">
-        ▼
-      </button>
+      <div class="query-details" id="details-{{ row.id }}">
+        <div>
+          <strong>Status:</strong> {{ row.status }}
+        </div>
+        <div>
+          <strong>SQL Query:</strong>
+          <pre>{{ row.generated_query }}</pre>
+        </div>
+        <div>
+          <strong>LLM Config:</strong>
+          <pre>{{ row.llm_config }}</pre>
+        </div>
+      </div>
     </div>
-    <div class="query-details" id="details-{{ row.id }}">
-      <div>
-        <strong>Status:</strong> {{ row.status }}
-      </div>
-      <div>
-        <strong>SQL Query:</strong>
-        <pre>{{ row.generated_query }}</pre>
-      </div>
-      <div>
-        <strong>LLM Config:</strong>
-        <pre>{{ row.llm_config }}</pre>
-      </div>
+    {% endfor %}
+  {% else %}
+    <div class="empty-state">
+      <p>📝 No prompts yet.</p>
     </div>
-  </div>
-  {% endfor %}
+  {% endif %}
 </div>
 
 {% endblock %}

@@ -16,19 +16,27 @@
   <div class="tools-panel">
     <div class="top-toolbar">
       <h3>Tools</h3>
-      <a href="/dashboard/bidashboard" class="exit-editor-btn">⏪</a>
-      <button class="save-btn">💾</button>
+      <a href="/dashboard/bidashboard" class="editor-button exit-button">Exit Editor</a>
+      <button class="editor-button save-button">Save Dashboard</button>
+      <div class="export-dropdown">
+        <button class="editor-button export-button" onclick="toggleExportDropdown()">Export As ⬇</button>
+        <div id="exportOptions" class="dropdown-content">
+          <button onclick="exportAsPDF()">📄 PDF</button>
+        </div>
+      </div>
       <div class="zoom-bar">
         <label for="zoomRange">Zoom:</label><br>
         <input type="range" id="zoomRange" min="50" max="200" value="100" />
         <span id="zoomValue">100%</span>
       </div>
-      <label for="canvas-size">Canvas Size:</label>
-      <select id="canvas-size">
-        <option value="a4">A4 (595x842 px)</option>
-        <option value="a3">A3 (842x1191 px)</option>
-        <option value="custom">Custom</option>
-      </select>
+      <div class="dropdown-container">
+        <label for="canvas-size">Canvas Size:</label>
+        <select id="canvas-size" class="styled-dropdown">
+          <option value="a4">A4 (595x842 px)</option>
+          <option value="a3">A3 (842x1191 px)</option>
+          <option value="custom">Custom</option>
+        </select>
+      </div>
 
       <!-- Inside tools-panel custom size apply -->
       <div id="custom-size-inputs" style="display: none; margin-top: 8px;">
@@ -103,6 +111,7 @@
   <script type="module" src="/static/js/dashboard/restore.js"></script>
   <script type="module" src="/static/js/dashboard/save.js"></script>
   <script type="module" src="/static/js/dashboard/widget_manager.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
   <script type="module">
     import { dashboardState } from '/static/js/dashboard/state.js';
@@ -123,6 +132,47 @@
       dashboardState.isInitialServerLoad = false;
       {% endif %}
     });
+  </script>
+  <script>
+  function toggleExportDropdown() {
+    document.querySelector('.export-dropdown').classList.toggle('show');
+  }
+
+  async function exportAsPDF() {
+    const zoomWrapper = document.getElementById("zoomWrapper");
+    const dashboardCanvas = document.getElementById("dashboardCanvas");
+
+    // Save and reset zoom
+    const originalTransform = zoomWrapper.style.transform;
+    zoomWrapper.style.transform = "scale(1)";
+
+    // Wait for zoom reset to take effect
+    await new Promise(r => setTimeout(r, 100));
+
+    const canvasBounds = dashboardCanvas.getBoundingClientRect();
+
+    const canvasImage = await html2canvas(dashboardCanvas, {
+      scale: 2,
+      width: canvasBounds.width,
+      height: canvasBounds.height,
+      useCORS: true
+    });
+
+    const imgData = canvasImage.toDataURL("image/png");
+
+    const pdf = new jspdf.jsPDF({
+      orientation: canvasBounds.width > canvasBounds.height ? 'landscape' : 'portrait',
+      unit: "px",
+      format: [canvasImage.width, canvasImage.height],
+    });
+
+    pdf.addImage(imgData, "PNG", 0, 0, canvasImage.width, canvasImage.height);
+    pdf.save("dashboard.pdf");
+
+    // Restore original zoom
+    zoomWrapper.style.transform = originalTransform;
+  }
+
   </script>
   {% endblock %}
 

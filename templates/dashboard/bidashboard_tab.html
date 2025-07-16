@@ -4,12 +4,28 @@
 
 <!-- Top Control Bar -->
 <div class="top-controls">
-  <input type="text" placeholder="search Dashboard" class="dashboard-search" />
+  <input type="text" placeholder="Search Dashboard" class="dashboard-search" id="dashboardSearchInput" />
   <div class="button-group">
     <a href="/dashboardeditor" class="new-dashboard-btn">New Dashboard +</a>
-    <button class="ask-ai-btn">Ask AI</button>
+    <button class="ask-ai-btn" id="askAiBtn">Ask AI</button>
   </div>
 </div>
+
+<!-- Ask AI Overlay -->
+<div id="askAiOverlay" class="ai-overlay">
+  <div class="ai-header">
+    <h3>AI Assistant</h3>
+    <span class="close-btn" onclick="toggleAiOverlay()">&times;</span>
+  </div>
+  <div class="ai-body" id="aiMessages">
+    <!-- AI messages will appear here -->
+  </div>
+  <div class="ai-input-bar">
+    <input type="text" id="aiInput" placeholder="Ask something..." />
+    <button id="aiSendBtn">Send</button>
+  </div>
+</div>
+
 
 <!-- Dashboard Grid Section -->
 <div id="dashboardList" class="thumbnail-grid">
@@ -33,40 +49,15 @@
   {% endfor %}
 </div>
 
+<p id="noDashboardsMessage" style="display: none; text-align: center; margin-top: 20px; color: #888;">
+  No dashboards created yet.
+</p>
+
+
 {% endblock %}
 
 {% block scripts %}
 <link rel="stylesheet" href="/static/css/bi_dashboard_tab.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-  async function deleteDashboard(dashboardId) {
-    const confirmed = confirm("Are you sure you want to delete this dashboard?");
-    if (!confirmed) return;
-
-    try {
-      const response = await fetch("/dashboard/delete", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id: dashboardId }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        alert(data.message);
-        // Optionally remove the deleted dashboard from the DOM without reload
-        const thumb = document.querySelector(`button[onclick="deleteDashboard(${dashboardId})"]`).closest('.dashboard-thumbnail');
-        if (thumb) thumb.remove();
-      } else {
-        alert("Error: " + data.detail);
-      }
-    } catch (error) {
-      console.error("Error deleting dashboard:", error);
-      alert("Something went wrong!");
-    }
-  }
-</script>
-
+<script src="/static/js/bi_dashboard.js"></script>
 {% endblock %}
