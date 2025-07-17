@@ -1,5 +1,9 @@
 {% extends "dashboard.html" %}
 
+{% block head %}
+<link rel="stylesheet" href="/static/css/bi_dashboard_tab.css">
+{% endblock %}
+
 {% block content %}
 
 <!-- Top Control Bar -->
@@ -57,7 +61,6 @@
 {% endblock %}
 
 {% block scripts %}
-<link rel="stylesheet" href="/static/css/bi_dashboard_tab.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="/static/js/bi_dashboard.js"></script>
 {% endblock %}

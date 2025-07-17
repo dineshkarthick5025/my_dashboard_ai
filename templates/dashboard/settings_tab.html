@@ -1,6 +1,10 @@
 <!-- Frontend Template (settings_tab.html) -->
 {% extends "dashboard.html" %}
 
+{% block head %}
+<link rel="stylesheet" href="/static/css/settings.css">
+{% endblock %}
+
 {% block content %}
 <div class="settings-wrapper">
     <div class="settings-container">
@@ -66,6 +70,5 @@
 {% endblock %}
 
 {% block scripts %}
-<link rel="stylesheet" href="/static/css/settings.css">
 <script src="/static/js/settings.js"></script>
 {% endblock %}

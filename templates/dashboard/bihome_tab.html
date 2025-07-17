@@ -1,6 +1,10 @@
 {% extends "dashboard.html" %}
 {% block title %}BI Home{% endblock %}
 
+{% block head %}
+<link rel="stylesheet" href="/static/css/bidashboard_tab.css">
+{% endblock %}
+
 {% block content %}
 <h2>Welcome back, {{ first_name }}!</h2>
 
@@ -119,7 +123,6 @@
 {% endblock %}
 
 {% block scripts %}
-<link rel="stylesheet" href="/static/css/bidashboard_tab.css">
 <script src="/static/js/modal.js"></script>
 {% endblock %}
 

@@ -1,4 +1,9 @@
 {% extends "dashboard.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="/static/css/query_history.css" />
+{% endblock %}
+
 {% block content %}
 
 <h2 class="query-title">Prompt History</h2>
@@ -40,7 +45,6 @@
 {% endblock %}
 
 {% block scripts %}
-<link rel="stylesheet" href="/static/css/query_history.css" />
 <script src="/static/js/query_history.js"></script>
 {% endblock %}
 

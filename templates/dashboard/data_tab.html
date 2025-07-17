@@ -1,6 +1,10 @@
 {% extends "dashboard.html" %}
 {% block title %}Data Tab{% endblock %}
 
+{% block head %}
+<link rel="stylesheet" href="/static/css/data_tab.css">
+{% endblock %}
+
 {% block content %}
 
 <h2>Connected Databases</h2>
@@ -78,7 +82,6 @@
 {% endblock %}
 
 {% block scripts %}
-<link rel="stylesheet" href="/static/css/data_tab.css">
 <script src="/static/js/modal.js"></script>
 <script src="/static/js/load_previews.js"></script>
 {% endblock %}
