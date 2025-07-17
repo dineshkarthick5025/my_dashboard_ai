@@ -1,7 +1,6 @@
 body {
   font-family: 'Montserrat', sans-serif;
   overflow: hidden;
-  height: 100%;
 }
 
 /* Layout reset */
@@ -18,9 +17,10 @@ body {
 
 .quick-actions h3,
 .recent-dashboards h3 {
-  color: white;
+  color: black;
   padding: 10px 20px;
-  background: linear-gradient(to right, #0C1E80, #74B3F1);
+  /* background: linear-gradient(to right, #0C1E80, #74B3F1); */
+  background: #D6ECFF;
   border-top-left-radius: 6px;
   border-bottom-right-radius: 6px;
   font-weight: 600;
@@ -30,17 +30,19 @@ body {
 /* Action buttons container */
 .action-buttons {
   display: flex;
-  gap: 20px;
+  gap: 60px;
   margin-top: 20px;
   flex-wrap: wrap;
 }
 
 .action-card {
-  border-radius: 12px; 
+  /* background: linear-gradient(to right, #D6ECFF, #FFFFFF); */
+  background: linear-gradient(to bottom, #E9F4FF, #FFFFFF);
+  border: 1px solid grey;
+  border-radius: 5px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   flex: 1;
-  min-width: 150px;
   height: 100px;
-  border: 1px solid #000;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -48,8 +50,10 @@ body {
 }
 
 .action-card:hover {
-  background-color: #e3ecfc; /* ✅ Add hover background */
-  transform: translateY(-3px); /* ✅ Lift on hover */
+  background-color: #e3ecfc;
+  /* ✅ Add hover background */
+  transform: translateY(-3px);
+  /* ✅ Lift on hover */
 }
 
 /* Recent dashboards section */
@@ -67,8 +71,10 @@ body {
 
 .dashboard-thumbnail {
   border-radius: 10px;
-  background-color: #6f8ec4; /* Light purple background */
-  padding: 8px; /* reduced from 10px */
+  background-color: #6f8ec4;
+  /* Light purple background */
+  padding: 8px;
+  /* reduced from 10px */
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
@@ -199,6 +205,7 @@ body {
     opacity: 0;
     transform: scale(0.95);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -263,6 +270,39 @@ body {
   background-color: #ffeaea;
 }
 
+
+.input-container {
+  position: relative;
+  width: 100%;
+  border: 1px solid grey;
+  height: 40px;
+  margin-top: 10px;
+
+  border-radius: 4px;
+  background-color: #fff;
+}
+
+.input-container i {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+  pointer-events: none;
+}
+
+.input-container input {
+  border: none;
+  outline: none;
+  /* ✅ removes focus border */
+  background: transparent;
+  width: 100%;
+  height: 100%;
+  padding-left: 36px;
+  /* space for icon */
+  font-size: 16px;
+  box-sizing: border-box;
+}
 
 .ai-overlay {
   min-height: 90vh;
