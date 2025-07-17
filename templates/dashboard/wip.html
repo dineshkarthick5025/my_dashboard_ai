@@ -1,0 +1,18 @@
+{% extends "dashboard.html" %}
+
+{% block title %}Work in Progress{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="/static/css/wip.css">
+{% endblock %}
+
+{% block content %}
+<div style="text-align: center; padding: 60px;">
+    <img src="/static/images/wip.png" alt="Work In Progress" style="width: 150px; margin-bottom: 20px;">
+    <h2 data-i18n="🚧 This feature is under development">🚧 This feature is under development</h2>
+    <p data-i18n="We're working hard to bring this feature to you. Please check back later!">
+        We're working hard to bring this feature to you. Please check back later!
+    </p>
+    <a href="/dashboard/bihome" class="back-home-btn" data-i18n="🔙 Back to Home">🔙 Back to Home</a>
+</div>
+{% endblock %}

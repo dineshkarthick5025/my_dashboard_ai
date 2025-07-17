@@ -112,3 +112,21 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+
+document.addEventListener("DOMContentLoaded", function () {
+  const searchInput = document.querySelector(".input-container input");
+  const thumbnails = document.querySelectorAll(".dashboard-thumbnail");
+
+  searchInput.addEventListener("input", function () {
+    const searchTerm = this.value.toLowerCase();
+
+    thumbnails.forEach((thumb) => {
+      const name = thumb.querySelector(".thumbnail-header span").textContent.toLowerCase();
+      if (name.includes(searchTerm)) {
+        thumb.style.display = "block";
+      } else {
+        thumb.style.display = "none";
+      }
+    });
+  });
+});

@@ -64,6 +64,30 @@ body {
 .sidebar {
   border-top-right-radius: 20px;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
+  overflow-y: hidden;
+  transition: all 0.3s ease;
+  height: 100vh;
+}
+
+.sidebar:hover {
+  overflow-y: auto;
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
+.sidebar:hover::-webkit-scrollbar-thumb {
+  background-color: #999;
 }
 
 .sidebar ul {
