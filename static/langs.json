@@ -383,6 +383,85 @@
     "en": "Contact",
     "fa": "تماس",
     "hi": "تواصل"
+  },
+  "Support": {
+    "en": "Support",
+    "fa": "پشتیبانی",
+    "hi": "الدعم"
+  },
+  "Feedback": {
+    "en": "Feedback",
+    "fa": "بازخورد",
+    "hi": "ملاحظات"
+  },
+  "Help Center": {
+    "en": "Help Center",
+    "fa": "مرکز راهنما",
+    "hi": "مركز المساعدة"
+  },
+  "Notifications": {
+    "en": "Notifications",
+    "fa": "اطلاعیه‌ها",
+    "hi": "الإشعارات"
+  },
+  "Reports": {
+    "en": "Reports",
+    "fa": "گزارش‌ها",
+    "hi": "التقارير"
+  },
+  "Billing": {
+    "en": "Billing",
+    "fa": "صورتحساب",
+    "hi": "الفوترة"
+  },
+  "Organization": {
+    "en": "Organization",
+    "fa": "سازمان",
+    "hi": "المنظمة"
+  },  
+  "Users": {
+    "en": "Users Analytics",
+    "fa": "تحلیل کاربران",
+    "hi": "تحليلات المستخدمين"
+  },
+  "Create New Analytics":   {
+    "en": "Create New Analytics",
+    "fa": "ایجاد تحلیل جدید",
+    "hi": "إنشاء تحليلات جديدة"
+  },
+  "Archive": {
+    "en": "Archive",
+    "fa": "آرشیو",
+    "hi": "الأرشيف"
+  },
+  "All": {
+    "en": "All",
+    "fa": "همه",
+    "hi": "الكل"
+  },
+  "Account": {
+    "en": "Account",
+    "fa": "حساب",
+    "hi": "الحساب"
+  },
+  "Data Studio": {
+    "en": "Data Studio",
+    "fa": "استودیو داده",
+    "hi": "استوديو البيانات"
+  },
+  "Manage": {
+    "en": "Manage",
+    "fa": "مدیریت",
+    "hi": "إدارة"
+  },
+  "Custom Services": {
+    "en": "Custom Services",
+    "fa": "خدمات سفارشی",
+    "hi": "الخدمات المخصصة"
+  },
+  "Search": {
+    "en": "Search",
+    "fa": "جستجو",
+    "hi": "بحث"
   }
-
 }
