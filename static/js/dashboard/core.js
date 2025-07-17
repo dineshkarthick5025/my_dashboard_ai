@@ -121,7 +121,7 @@ function restoreDashboardFromData(dashboardData) {
 
     // Clear existing widgets first
     clearAllWidgets();
-    
+
 
     // Restore canvas size
     const canvas = document.getElementById('dashboardCanvas');
@@ -176,7 +176,7 @@ function restoreDashboardFromData(dashboardData) {
     // Remove from DOM
     document.querySelectorAll('.chart-widget').forEach(widget => widget.remove());
     document.querySelectorAll('.widget-btn').forEach(btn => btn.remove());
-    
+
     // Clear customization panel if open
     const customizationPanel = document.getElementById('chartCustomControls');
     if (customizationPanel) {
@@ -191,13 +191,13 @@ function restoreDashboardFromData(dashboardData) {
 
 document.addEventListener('DOMContentLoaded', () => {
   console.log('=== DASHBOARD INITIALIZATION STARTED ===');
-  
+
   try {
     console.log('1. Checking for saved canvas size...');
-    console.log('Retrieving canvasSize from sessionStorage...',sessionStorage.getItem('canvasSize'));
+    console.log('Retrieving canvasSize from sessionStorage...', sessionStorage.getItem('canvasSize'));
     const savedSize = JSON.parse(sessionStorage.getItem('canvasSize'));
     console.log('Retrieved canvasSize from sessionStorage:', savedSize);
-    
+
     const canvas = document.getElementById('dashboardCanvas');
     const sizeSelect = document.getElementById('canvas-size');
     console.log('Canvas element:', canvas);
@@ -205,7 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (savedSize) {
       console.log('Found saved canvas size configuration');
-      
+
       if (savedSize.type === 'a4') {
         console.log('Setting A4 size (595x842px)');
         canvas.style.width = '595px';
@@ -259,13 +259,13 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log('Checking scroll dimensions...');
       console.log('Scroll height:', canvasArea.scrollHeight, 'Client height:', canvasArea.clientHeight);
       console.log('Scroll width:', canvasArea.scrollWidth, 'Client width:', canvasArea.clientWidth);
-      
-      if (canvasArea.scrollHeight > canvasArea.clientHeight || 
-          canvasArea.scrollWidth > canvasArea.clientWidth) {
+
+      if (canvasArea.scrollHeight > canvasArea.clientHeight ||
+        canvasArea.scrollWidth > canvasArea.clientWidth) {
         const targetTop = (canvasArea.scrollHeight - canvasArea.clientHeight) / 2;
         const targetLeft = (canvasArea.scrollWidth - canvasArea.clientWidth) / 2;
         console.log(`Scrolling to position (top: ${targetTop}, left: ${targetLeft})`);
-        
+
         canvasArea.scrollTo({
           top: targetTop,
           left: targetLeft,
@@ -278,7 +278,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     console.log('Initial centering attempt...');
     centerScroll();
-    
+
     setTimeout(() => {
       console.log('Delayed centering attempt (after 100ms)...');
       centerScroll();
@@ -358,7 +358,7 @@ window.restoreDashboardFromData = restoreDashboardFromData;
 
 // Button Event Listeners after DOM ready
 document.addEventListener('DOMContentLoaded', () => {
-  
+
   const applyCustomSizeBtn = document.getElementById('applyCustomSizeBtn');
   const generateDashboardBtn = document.getElementById('generateDashboardBtn');
   const canvasSizeSelect = document.getElementById('canvas-size');

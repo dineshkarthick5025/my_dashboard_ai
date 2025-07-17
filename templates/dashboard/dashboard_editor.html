@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title data-i18n="Dashboard Editor">Dashboard Editor</title>
@@ -9,6 +10,7 @@
   <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 </head>
+
 <body class="fade-in" style="opacity: 0;"></body>
 
 <div class="editor-container">
@@ -20,7 +22,8 @@
       <a href="/dashboard/bidashboard" class="editor-button exit-button" data-i18n="Exit Editor">Exit Editor</a>
       <button class="editor-button save-button" data-i18n="Save Dashboard">Save Dashboard</button>
       <div class="export-dropdown">
-        <button class="editor-button export-button" onclick="toggleExportDropdown()" data-i18n="Export As">Export As ⬇</button>
+        <button class="editor-button export-button" onclick="toggleExportDropdown()" data-i18n="Export As">Export As
+          ⬇</button>
         <div id="exportOptions" class="dropdown-content">
           <button onclick="exportAsPDF()">📄 <span data-i18n="PDF">PDF</span></button>
         </div>
@@ -28,7 +31,8 @@
 
       <!-- Language Switch -->
       <div class="language-dropdown" style="margin-left: 20px;">
-        <label for="languageSelect" data-i18n="Language" style="font-weight: 600; font-size: 14px; margin-right: 8px;">🌐</label>
+        <label for="languageSelect" data-i18n="Language"
+          style="font-weight: 600; font-size: 14px; margin-right: 8px;">🌐</label>
         <select id="languageSelect" class="styled-dropdown">
           <option value="en">English</option>
           <option value="ar">Arabic</option>
@@ -80,7 +84,8 @@
       {% endfor %}
     </select>
 
-    <textarea id="dashboardPrompt" placeholder="e.g., Show monthly revenue comparison for 2024..." data-i18n-placeholder="Describe your dashboard"></textarea>
+    <textarea id="dashboardPrompt" placeholder="e.g., Show monthly revenue comparison for 2024..."
+      data-i18n-placeholder="Describe your dashboard"></textarea>
     <div style="margin-top: 10px;">
       <label for="chart-type" data-i18n="Select Chart Type">Select Chart Type:</label>
       <br><br>
@@ -100,7 +105,8 @@
   <div class="modal-content">
     <span class="close" id="closeSaveModal">&times;</span>
     <h3 data-i18n="Save Dashboard">Save Your Dashboard</h3>
-    <input type="text" id="dashboardNameInput" placeholder="Enter dashboard name..." data-i18n-placeholder="Enter dashboard name..." style="width: 100%; margin-top: 15px; padding: 8px;" />
+    <input type="text" id="dashboardNameInput" placeholder="Enter dashboard name..."
+      data-i18n-placeholder="Enter dashboard name..." style="width: 100%; margin-top: 15px; padding: 8px;" />
     <div style="margin-top: 20px; text-align: right;">
       <button id="confirmSaveBtn" class="db-option" data-i18n="Save">💾 Save</button>
       <button id="cancelSaveBtn" class="db-option" style="background-color: gray;" data-i18n="Cancel">Cancel</button>
@@ -123,38 +129,38 @@
   });
 </script>
 {% block scripts %}
-  <!-- Load state.js first since other modules depend on it -->
-  <script type="module" src="/static/js/dashboard/state.js"></script>
-  <script type="module" src="/static/js/dashboard/core.js"></script>
-  <script type="module" src="/static/js/dashboard/drag_resize.js"></script>
-  <script type="module" src="/static/js/dashboard/helper.js"></script>
-  <script type="module" src="/static/js/dashboard/render_chart.js"></script>
-  <script type="module" src="/static/js/dashboard/restore.js"></script>
-  <script type="module" src="/static/js/dashboard/save.js"></script>
-  <script type="module" src="/static/js/dashboard/widget_manager.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<!-- Load state.js first since other modules depend on it -->
+<script type="module" src="/static/js/dashboard/state.js"></script>
+<script type="module" src="/static/js/dashboard/core.js"></script>
+<script type="module" src="/static/js/dashboard/drag_resize.js"></script>
+<script type="module" src="/static/js/dashboard/helper.js"></script>
+<script type="module" src="/static/js/dashboard/render_chart.js"></script>
+<script type="module" src="/static/js/dashboard/restore.js"></script>
+<script type="module" src="/static/js/dashboard/save.js"></script>
+<script type="module" src="/static/js/dashboard/widget_manager.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-  <script type="module">
-    import { dashboardState } from '/static/js/dashboard/state.js';
-    
-    document.addEventListener('DOMContentLoaded', () => {
-      {% if dashboard_data %}
-      // Initialize state
-      dashboardState.isInitialServerLoad = true;
-      
-      // Clear any existing session data
-      sessionStorage.removeItem('widgets');
-      sessionStorage.removeItem('canvasSize');
-      
-      // Restore from server data
-      restoreDashboardFromData({{ dashboard_data | tojson | safe }});
-      
-      // Update state after restoration
-      dashboardState.isInitialServerLoad = false;
-      {% endif %}
+<script type="module">
+  import { dashboardState } from '/static/js/dashboard/state.js';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    {% if dashboard_data %}
+    // Initialize state
+    dashboardState.isInitialServerLoad = true;
+
+    // Clear any existing session data
+    sessionStorage.removeItem('widgets');
+    sessionStorage.removeItem('canvasSize');
+
+    // Restore from server data
+    restoreDashboardFromData({{ dashboard_data | tojson | safe }});
+
+  // Update state after restoration
+  dashboardState.isInitialServerLoad = false;
+  {% endif %}
     });
-  </script>
-  <script>
+</script>
+<script>
   function toggleExportDropdown() {
     document.querySelector('.export-dropdown').classList.toggle('show');
   }
@@ -194,21 +200,20 @@
     zoomWrapper.style.transform = originalTransform;
   }
 
-  </script>
+</script>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const savedLang = localStorage.getItem('language') || 'en';
-      document.getElementById('languageSelect').value = savedLang;
-      loadLanguage(savedLang).then(() => {
-        // Trigger the fade-in after i18n finishes
-        document.body.style.opacity = '1';
-      });
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const savedLang = localStorage.getItem('language') || 'en';
+    document.getElementById('languageSelect').value = savedLang;
+    loadLanguage(savedLang).then(() => {
+      // Trigger the fade-in after i18n finishes
+      document.body.style.opacity = '1';
     });
-  </script>
-  {% endblock %}
+  });
+</script>
+{% endblock %}
 
 </body>
+
 </html>
-
-

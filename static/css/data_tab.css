@@ -1,7 +1,7 @@
-
 body {
   font-family: 'Montserrat', sans-serif;
 }
+
 /* Reset */
 * {
   margin: 0;
@@ -65,7 +65,7 @@ button {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
 }
 
 .modal-content {
@@ -90,7 +90,7 @@ button {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -121,8 +121,8 @@ button {
 }
 
 .new-data-btn {
-  background-color: #4B3797;
-  color: white;
+  background-color: #D6ECFF;
+  color: #2F7FFC;
   font-weight: 600;
   font-size: 14px;
   padding: 8px 18px;
@@ -162,7 +162,7 @@ button {
 .table-box {
   background: #fff;
   border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
   border: 1px solid #ddd;
   padding: 10px;
   height: 260px;
@@ -191,7 +191,8 @@ button {
   font-size: 0.9rem;
 }
 
-.table-content th, .table-content td {
+.table-content th,
+.table-content td {
   padding: 6px 10px;
   border: 1px solid #ddd;
   text-align: left;
@@ -284,8 +285,8 @@ button {
 .modal-content form button[type="submit"] {
   margin-top: 20px;
   width: 100%;
-  background-color: #261C91;
-  color: white;
+  background-color: #D6ECFF;
+  color: #2F7FFC;
   font-weight: 600;
   border: none;
   padding: 10px;
@@ -295,7 +296,7 @@ button {
 }
 
 .modal-content form button[type="submit"]:hover {
-  background-color: #3f2db3;
+  background-color: #D6ECFF;
 }
 
 /* Modal entrance animation */
@@ -304,6 +305,7 @@ button {
     opacity: 0;
     transform: scale(0.95);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -322,8 +324,8 @@ button {
 /* Individual DB Option Button */
 .db-option {
   padding: 12px;
-  background-color: #0C1E80;
-  color: white;
+  background-color: #D6ECFF;
+  color: #2F7FFC;
   border: none;
   border-radius: 6px;
   font-size: 15px;
@@ -334,15 +336,17 @@ button {
 }
 
 .db-option:hover {
-  background-color: #1d379e;
+  background-color: #D6ECFF;
   transform: translateY(-2px);
 }
 
 .spinner-overlay {
-  position: relative; /* Changed from fixed to relative */
+  position: relative;
+  /* Changed from fixed to relative */
   width: 100%;
-  height: 200px; /* Give it some height */
-  background: rgba(0,0,0,0.05);
+  height: 200px;
+  /* Give it some height */
+  background: rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -362,8 +366,13 @@ button {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 #previewContent {
@@ -380,8 +389,8 @@ button {
 
 .empty-state button {
   margin-top: 20px;
-  background-color: #261C91;
-  color: white;
+  background-color: #D6ECFF;
+  color: #2F7FFC;
   padding: 10px 20px;
   border: none;
   border-radius: 6px;
@@ -389,5 +398,5 @@ button {
 }
 
 .empty-state button:hover {
-  background-color: #1a1574;
+  background-color: #D6ECFF;
 }

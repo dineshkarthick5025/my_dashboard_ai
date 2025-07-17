@@ -383,8 +383,10 @@ body {
   border-radius: 6px;
   background-color: #f1f1f1;
   line-height: 1.6;
-  white-space: pre-wrap;         /* Preserve \n as line breaks */
-  word-break: break-word;        /* Break long words */
+  white-space: pre-wrap;
+  /* Preserve \n as line breaks */
+  word-break: break-word;
+  /* Break long words */
   max-width: 90%;
   font-size: 14px;
 }
@@ -411,8 +413,8 @@ body {
 .empty-state .new-dashboard-btn {
   display: inline-block;
   padding: 10px 20px;
-  background-color: #261C91;
-  color: white;
+  background-color: #D6ECFF;
+  color: #2F7FFC;
   text-decoration: none;
   border-radius: 6px;
 }

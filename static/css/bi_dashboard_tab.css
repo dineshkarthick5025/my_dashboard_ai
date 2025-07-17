@@ -28,8 +28,8 @@ body {
 
 .new-dashboard-btn,
 .ask-ai-btn {
-  background-color: #261C91;
-  color: white;
+  background-color: #D6ECFF;
+  color: #2F7FFC;
   font-weight: 600;
   font-size: 14px;
   padding: 8px 18px;
@@ -41,7 +41,8 @@ body {
 }
 
 .ask-ai-btn {
-  background-color: #4B3797;
+  background-color: #D6ECFF;
+  color: #2F7FFC;
 }
 
 /* Grid for dashboard previews */
@@ -53,7 +54,8 @@ body {
 
 .dashboard-thumbnail {
   border-radius: 10px;
-  background-color: #6f8ec4; /* Light purple background */
+  background-color: #D6ECFF;
+  /* Light purple background */
   padding: 10px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
@@ -151,8 +153,8 @@ body {
 
 .ai-header {
   padding: 15px;
-  background-color: #261C91;
-  color: white;
+  background-color: #D6ECFF;
+  color: #2F7FFC;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -183,8 +185,8 @@ body {
 
 .ai-input-bar button {
   margin-left: 8px;
-  background-color: #261C91;
-  color: white;
+  background-color: #D6ECFF;
+  color: #2F7FFC;
   border: none;
   padding: 8px 16px;
   border-radius: 4px;
@@ -193,7 +195,7 @@ body {
 }
 
 .ai-input-bar button:hover {
-  background-color: #1b1470;
+  background-color: #D6ECFF;
 }
 
 .close-btn {
@@ -208,8 +210,10 @@ body {
   border-radius: 6px;
   background-color: #f1f1f1;
   line-height: 1.6;
-  white-space: pre-wrap;         /* Preserve \n as line breaks */
-  word-break: break-word;        /* Break long words */
+  white-space: pre-wrap;
+  /* Preserve \n as line breaks */
+  word-break: break-word;
+  /* Break long words */
   max-width: 90%;
   font-size: 14px;
 }
@@ -225,4 +229,3 @@ body {
   align-self: flex-start;
   text-align: left;
 }
-
