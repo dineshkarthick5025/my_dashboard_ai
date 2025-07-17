@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -12,18 +12,7 @@
       padding: 0;
       box-sizing: border-box;
     }
-
-    /* body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364, #1b2735);
-      background-size: 400% 400%;
-      animation: gradientBG 10s ease infinite;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-    } */
+    
      body {
       font-family: 'Poppins', sans-serif;
       background-image: url('/static/images/ai_bg.png');
@@ -150,4 +139,247 @@
     console.log("[DEBUG] sessionStorage cleared on login page load.");
   </script>
 </body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - AI Analytics</title>
+  <link rel="icon" href="https://aianalytics.ethicalintelligent.com/static/favicon.ico" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-image: url('../static/images/loginpageback.png');
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      min-height: 100vh;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .eit-title {
+      color: #FFF2F2;
+      font-size: clamp(32px, 8vw, 64px);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 30px;
+      width: 100%;
+      line-height: 1.2;
+    }
+
+    .login-box {
+      background-color: rgba(255, 255, 255, 0.95);
+      padding: clamp(25px, 5vw, 40px);
+      border-radius: 10px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 6px 30px rgba(0, 0, 0, 0.2);
+      color: #1a0b58;
+      margin: 0 auto;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      font-weight: bold;
+      font-size: clamp(18px, 4vw, 20px);
+      margin-bottom: clamp(20px, 5vw, 30px);
+      opacity: 0.8;
+    }
+
+    .logo img {
+      width: clamp(36px, 8vw, 40px);
+      height: clamp(36px, 8vw, 40px);
+      opacity: 0.8;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: clamp(10px, 3vw, 12px);
+      margin: 10px 0 clamp(12px, 3vw, 15px);
+      border: 2px solid black;
+      opacity: 0.5;
+      border-radius: 2px;
+      font-size: clamp(14px, 3.5vw, 16px);
+    }
+
+    button {
+      width: clamp(180px, 60%, 220px);
+      display: block;
+      margin: 0 auto;
+      background-color: #006fb4;
+      color: white;
+      padding: clamp(10px, 3vw, 12px);
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: clamp(14px, 3.5vw, 16px);
+      transition: background-color 0.3s, transform 0.3s;
+    }
+
+    button:hover {
+      background-color: #006fb4;
+      transform: scale(1.03);
+    }
+
+    .register-text {
+      text-align: center;
+      margin-top: clamp(15px, 4vw, 20px);
+      font-size: clamp(13px, 3.2vw, 14px);
+    }
+
+    .register-text a {
+      color: #00ccff;
+      text-decoration: none;
+    }
+
+    .register-text a:hover {
+      text-decoration: underline;
+    }
+
+    .error {
+      background-color: #fee2e2;
+      color: #b91c1c;
+      padding: clamp(8px, 3vw, 10px);
+      border-radius: 6px;
+      text-align: center;
+      margin-bottom: clamp(15px, 4vw, 20px);
+      font-size: clamp(13px, 3.2vw, 14px);
+    }
+
+    /* Medium devices (tablets, 768px and up) */
+    @media (min-width: 320px) {
+      body {
+        padding: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      
+      .login-box {
+        padding: 35px;
+        margin-top: 100px;
+      }
+
+      .eit-title{
+        position: absolute;
+        
+        top: 90px;
+      }
+    }
+
+    @media (min-width: 420px) {
+      body {
+        padding: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      
+      .login-box {
+        padding: 35px;
+        margin-top: 100px;
+      }
+
+      .eit-title{
+        position: absolute;
+        
+        top: 90px;
+      }
+    }
+    @media (min-width: 768px) {
+      body {
+        padding: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      
+      .login-box {
+        margin-top: 200px;
+        padding: 35px;
+      }
+       
+    }
+
+    /* Large devices (desktops, 992px and up) */
+    @media (min-width: 992px) {
+      body {
+        flex-direction: row;
+        justify-content: flex-end;
+        align-items: center;
+        padding-right: 10%;
+        padding-left: 10%;
+      }
+      
+      .eit-title {
+        position: absolute;
+        left: 40px;
+        top: 40px;
+        text-align: left;
+        width: auto;
+        margin-bottom: 0;
+      }
+      
+      .login-box {
+        margin-right: 0;
+        margin-top: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="eit-title">
+    EIT<br>ANALYTICS
+  </div>
+
+  <div class="login-box">
+    <div class="logo">
+      <img src="../static/images/AI_analytics-removebg-preview.png" alt="AI Logo">
+      <span>AI ANALYTICS</span>
+    </div>
+
+    {% if error %}
+    <div class="error">{{ error }}</div>
+    {% endif %}
+<div style="color: black !important;">
+    <form method="post">
+      <input type="text" name="username" placeholder="Username" required style="color: black !important; opacity: 0.7;" />
+      <input type="password" name="password" placeholder="Password" required style="color: black !important; opacity: 0.7;"/>
+      <button type="submit">Login</button>
+      <p class="register-text">
+        Don't have an account? <a href="/signup">Sign up</a>
+      </p>
+    </form>
+    </div>
+  </div>
+  <script>
+    // Clear client-side session storage on login page load
+    window.sessionStorage.clear();
+    console.log("[DEBUG] sessionStorage cleared on login page load.");
+  </script>
+</body>
+
 </html>
