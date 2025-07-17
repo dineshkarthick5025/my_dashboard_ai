@@ -450,3 +450,22 @@ label {
 .export-dropdown.show .dropdown-content {
     display: block;
 }
+
+/* Modern styled dropdown */
+.styled-dropdown {
+  padding: 6px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: white;
+  color: #333;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.styled-dropdown:hover,
+.styled-dropdown:focus {
+  border-color: #007BFF;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.15);
+}

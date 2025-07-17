@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Dashboard{% endblock %}</title>
+    <title>{% block title %}<span data-i18n="Dashboard">Dashboard</span>{% endblock %}</title>
     <link rel="icon" href="https://aianalytics.ethicalintelligent.com/static/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="/static/css/dashboard.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
@@ -12,37 +12,37 @@
     <!-- Sidebar -->
     <div class="sidebar">
         <ul>
-            <li><a href="/dashboard/bihome" class="{% if active_page == 'bihome' %}active{% endif %}">BI Home</a></li>
-            <li><a href="/dashboard/bidashboard" class="{% if active_page == 'bidashboard' %}active{% endif %}">Dashboard</a></li>
-            <li><a href="/dashboard/data" class="{% if active_page == 'data' %}active{% endif %}">Data</a></li>
-            <li><a href="/dashboard/history" class="{% if active_page == 'history' %}active{% endif %}">History</a></li>
-            <li><a href="/dashboard/settings" class="{% if active_page == 'settings' %}active{% endif %}">Settings</a></li>
+            <li><a href="/dashboard/bihome" class="{% if active_page == 'bihome' %}active{% endif %}" data-i18n="BI Home">BI Home</a></li>
+            <li><a href="/dashboard/bidashboard" class="{% if active_page == 'bidashboard' %}active{% endif %}" data-i18n="Dashboard">Dashboard</a></li>
+            <li><a href="/dashboard/data" class="{% if active_page == 'data' %}active{% endif %}" data-i18n="Data">Data</a></li>
+            <li><a href="/dashboard/history" class="{% if active_page == 'history' %}active{% endif %}" data-i18n="History">History</a></li>
+            <li><a href="/dashboard/settings" class="{% if active_page == 'settings' %}active{% endif %}" data-i18n="Settings">Settings</a></li>
         </ul>
     </div>
 
-
     <!-- Top header -->
     <div class="header-bar">
-        <div class="sidebar-title">EitAiAnalytics</div>
-            <div class="header-right">
-                <select name="language" id="language-select">
-                    <option value="en">English</option>
-                    <option value="hi">Arabic</option>
-                    <option value="fa">Farsi</option>
-                </select>
-                <button class="profile-btn" title="Profile">
-                    <img src="/static/images/profile.png" alt="Profile" class="profile-icon">
-                </button>
-                <a href="#" class="logout-btn" onclick="handleLogout()">
-                    <img src="/static/images/logout.png" alt="Logout" class="logout-icon">
-                </a>
-            </div>
+        <div class="sidebar-title" data-i18n="EitAiAnalytics">EitAiAnalytics</div>
+        <div class="header-right">
+            <select name="language" id="language-select">
+                <option value="en" data-i18n="English">English</option>
+                <option value="hi" data-i18n="Arabic">Arabic</option>
+                <option value="fa" data-i18n="Farsi">Farsi</option>
+            </select>
+            <button class="profile-btn" title="Profile" data-i18n-title="Profile">
+                <img src="/static/images/profile.png" alt="Profile" class="profile-icon">
+            </button>
+            <a href="#" class="logout-btn" onclick="handleLogout()" title="Logout" data-i18n-title="Logout">
+                <img src="/static/images/logout.png" alt="Logout" class="logout-icon">
+            </a>
+        </div>
     </div>
 
     <!-- Main content -->
     <div class="main-content">
         {% block content %}{% endblock %}
     </div>
+
     <script>
         function handleLogout() {
             sessionStorage.clear();
@@ -50,10 +50,119 @@
         }
     </script>
 
+    <script>
+        const LANG_FILE_PATH = "/static/langs.json";
+
+        function applyTranslations(lang, translations) {
+            console.log(`[i18n] Applying translations for: ${lang}`);
+
+            // Translate text content
+            document.querySelectorAll("[data-i18n]").forEach(el => {
+                const key = el.getAttribute("data-i18n");
+                const value = translations[key]?.[lang];
+                if (value) {
+                    if (value.includes("<br>") || value.includes("<")) {
+                        el.innerHTML = value
+                            .replace(/</g, "&lt;")
+                            .replace(/&lt;br\s*\/?&gt;/gi, "<br>");
+                        console.log(`[i18n] Set inner HTML: ${key} -> ${value}`);
+                    } else {
+                        el.textContent = value;
+                        console.log(`[i18n] Set inner text: ${key} -> ${value}`);
+                    }
+                } else {
+                    console.warn(`[i18n] ⚠️ Missing translation for key: "${key}" in lang: "${lang}"`);
+                }
+            });
+
+
+            // Translate title attributes (tooltips)
+            document.querySelectorAll("[data-i18n-title]").forEach(el => {
+                const key = el.getAttribute("data-i18n-title");
+                const value = translations[key]?.[lang];
+                if (value) {
+                    el.title = value;
+                    console.log(`[i18n] Set title: ${key} -> ${value}`);
+                } else {
+                    console.warn(`[i18n] ⚠️ Missing title translation for key: "${key}" in lang: "${lang}"`);
+                }
+            });
+
+            // Translate placeholder attributes
+            document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
+                const key = el.getAttribute("data-i18n-placeholder");
+                const value = translations[key]?.[lang];
+                if (value) {
+                    el.placeholder = value;
+                    console.log(`[i18n] Set placeholder: ${key} -> ${value}`);
+                } else {
+                    console.warn(`[i18n] ⚠️ Missing placeholder translation for key: "${key}" in lang: "${lang}"`);
+                }
+            });
+
+            // Translate <title>
+            const titleEl = document.querySelector("title[data-i18n]");
+            if (titleEl) {
+                const key = titleEl.getAttribute("data-i18n");
+                const value = translations[key]?.[lang];
+                if (value) {
+                    titleEl.textContent = value;
+                    console.log(`[i18n] Set <title>: ${key} -> ${value}`);
+                } else {
+                    console.warn(`[i18n] ⚠️ Missing title translation for key: "${key}" in lang: "${lang}"`);
+                }
+            }
+
+            // Set direction (RTL or LTR)
+            const direction = (lang === 'ar' || lang === 'fa') ? 'rtl' : 'ltr';
+            document.documentElement.dir = direction;
+            console.log(`[i18n] Document direction set to: ${direction}`);
+        }
+
+        function loadLanguage(lang) {
+            console.log(`[i18n] Loading language file from: ${LANG_FILE_PATH}`);
+
+            fetch(LANG_FILE_PATH)
+                .then(res => {
+                    if (!res.ok) {
+                        throw new Error(`[i18n] Failed to fetch language file: ${res.status}`);
+                    }
+                    return res.json();
+                })
+                .then(data => {
+                    console.log("[i18n] Language file loaded:", data);
+                    localStorage.setItem("lang", lang);
+                    applyTranslations(lang, data);
+                })
+                .catch(err => {
+                    console.error("[i18n] ❌ Error loading language file:", err);
+                });
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const savedLang = localStorage.getItem("lang") || "en";
+            const selector = document.getElementById("language-select");
+
+            console.log(`[i18n] Initial language: ${savedLang}`);
+
+            if (selector) {
+                selector.value = savedLang;
+                selector.addEventListener("change", (e) => {
+                    const selectedLang = e.target.value;
+                    console.log(`[i18n] Language changed to: ${selectedLang}`);
+                    loadLanguage(selectedLang);
+                });
+            } else {
+                console.warn("[i18n] ⚠️ Language selector not found.");
+            }
+
+            loadLanguage(savedLang);
+        });
+    </script>
+
+
     {% block scripts %}
     {% endblock %}
-
-
 </body>
 </html>
 

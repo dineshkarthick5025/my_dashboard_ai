@@ -6,7 +6,7 @@
 
 {% block content %}
 
-<h2 class="query-title">Prompt History</h2>
+<h2 class="query-title" data-i18n="Prompt History">Prompt History</h2>
 
 <div class="query-history-container">
   {% if history %}
@@ -22,14 +22,14 @@
       </div>
       <div class="query-details" id="details-{{ row.id }}">
         <div>
-          <strong>Status:</strong> {{ row.status }}
+          <strong data-i18n="Status">Status:</strong> {{ row.status }}
         </div>
         <div>
-          <strong>SQL Query:</strong>
+          <strong data-i18n="SQL Query">SQL Query:</strong>
           <pre>{{ row.generated_query }}</pre>
         </div>
         <div>
-          <strong>LLM Config:</strong>
+          <strong data-i18n="LLM Config">LLM Config:</strong>
           <pre>{{ row.llm_config }}</pre>
         </div>
       </div>
@@ -37,7 +37,7 @@
     {% endfor %}
   {% else %}
     <div class="empty-state">
-      <p>📝 No prompts yet.</p>
+      <p data-i18n="📝 No prompts yet.">📝 No prompts yet.</p>
     </div>
   {% endif %}
 </div>
@@ -47,5 +47,3 @@
 {% block scripts %}
 <script src="/static/js/query_history.js"></script>
 {% endblock %}
-
-

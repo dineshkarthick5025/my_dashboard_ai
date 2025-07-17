@@ -7,7 +7,7 @@
 
 {% block content %}
 
-<h2>Connected Databases</h2>
+<h2 data-i18n="Connected Databases">Connected Databases</h2>
 
 {% if message %}
   <div class="alert" style="background-color: #e6f7ff; color: #005b99; padding: 12px; border-radius: 6px; margin-bottom: 20px;">
@@ -17,10 +17,10 @@
 
 <!-- Top Bar: Search + Buttons -->
 <div class="top-controls">
-  <input type="text" placeholder="Search..." class="dashboard-search" />
+  <input type="text" class="dashboard-search" placeholder="Search..." data-i18n-placeholder="Search..." />
   <div class="button-group">
-    <button id="connectDatabase" class="new-data-btn">➕ Connect Database</button>
-    <button id="refreshPreviewsBtn" class="new-data-btn">🔄 Refresh Previews</button>
+    <button id="connectDatabase" class="new-data-btn" data-i18n="➕ Connect Database">➕ Connect Database</button>
+    <button id="refreshPreviewsBtn" class="new-data-btn" data-i18n="🔄 Refresh Previews">🔄 Refresh Previews</button>
     <button class="icon-btn">⇅</button>
     <button class="icon-btn">≡</button>
     <button class="icon-btn">▦</button>
@@ -31,12 +31,12 @@
 <div id="dbModal" class="modal">
   <div class="modal-content">
     <span class="close" id="closeModal">&times;</span>
-    <h2>Select Database Type</h2>
+    <h2 data-i18n="Select Database Type">Select Database Type</h2>
     <div class="db-options">
-      <button class="db-option" data-type="PostgreSQL" onclick="openPostgresForm()">PostgreSQL</button>
-      <button class="db-option" data-type="MySQL">MySQL</button>
-      <button class="db-option" data-type="MSSQL">MSSQL</button>
-      <button class="db-option" data-type="Oracle">Oracle</button>
+      <button class="db-option" data-type="PostgreSQL" onclick="openPostgresForm()" data-i18n="PostgreSQL">PostgreSQL</button>
+      <button class="db-option" data-type="MySQL" data-i18n="MySQL">MySQL</button>
+      <button class="db-option" data-type="MSSQL" data-i18n="MSSQL">MSSQL</button>
+      <button class="db-option" data-type="Oracle" data-i18n="Oracle">Oracle</button>
     </div>
   </div>
 </div>
@@ -44,37 +44,43 @@
 <div id="postgresModal" class="modal">
   <div class="modal-content">
     <span class="close" onclick="closePostgresForm()">&times;</span>
-    <h3>Connect to PostgreSQL</h3>
+    <h3 data-i18n="Connect to PostgreSQL">Connect to PostgreSQL</h3>
     <form id="postgresForm" method="post" action="/dashboard/data">
       <input type="hidden" name="db_type" value="PostgreSQL">
-      <label>Host:</label>
-      <input type="text" name="host" required>
-      <label>Port:</label>
+      
+      <label data-i18n="Host:">Host:</label>
+      <input type="text" name="host" required data-i18n-placeholder="Host">
+      
+      <label data-i18n="Port:">Port:</label>
       <input type="number" name="port" value="5432" required>
-      <label>Database Name:</label>
-      <input type="text" name="database" required>
-      <label>Username:</label>
-      <input type="text" name="user" required>
-      <label>Password:</label>
-      <input type="password" name="password" required>
-      <label>SSL Mode:</label>
+      
+      <label data-i18n="Database Name:">Database Name:</label>
+      <input type="text" name="database" required data-i18n-placeholder="Database Name">
+      
+      <label data-i18n="Username:">Username:</label>
+      <input type="text" name="user" required data-i18n-placeholder="Username">
+      
+      <label data-i18n="Password:">Password:</label>
+      <input type="password" name="password" required data-i18n-placeholder="Password">
+      
+      <label data-i18n="SSL Mode:">SSL Mode:</label>
       <select name="sslmode">
-        <option value="disable">Disable</option>
-        <option value="require">Require</option>
-        <option value="verify-ca">Verify CA</option>
-        <option value="verify-full">Verify Full</option>
+        <option value="disable" data-i18n="Disable">Disable</option>
+        <option value="require" data-i18n="Require">Require</option>
+        <option value="verify-ca" data-i18n="Verify CA">Verify CA</option>
+        <option value="verify-full" data-i18n="Verify Full">Verify Full</option>
       </select>
-      <button type="submit">Connect</button>
+      
+      <button type="submit" data-i18n="Connect">Connect</button>
     </form>
   </div>
 </div>
 
 <!-- Database Previews -->
-<!-- Replace your current preview-section with this -->
 <div id="preview-section">
   <div id="loadingSpinner" class="spinner-overlay">
     <div class="spinner"></div>
-    <span>Loading previews...</span>
+    <span data-i18n="Loading previews...">Loading previews...</span>
   </div>
   <div id="previewContent" style="display: none;"></div>
 </div>

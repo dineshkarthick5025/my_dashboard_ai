@@ -1,7 +1,7 @@
 {% if previews_by_db|length == 0 %}
   <div class="empty-state">
-    <p>😕 No databases connected yet.</p>
-    <button onclick="document.getElementById('dbModal').style.display='block'" class="new-data-btn">
+    <p data-i18n="😕 No databases connected yet.">😕 No databases connected yet.</p>
+    <button onclick="document.getElementById('dbModal').style.display='block'" class="new-data-btn" data-i18n="➕ Connect Database">
       ➕ Connect Database
     </button>
   </div>
@@ -9,7 +9,7 @@
   {% for db in previews_by_db %}
     <div class="db-section">
       <div class="db-header">
-        <span class="db-icon">➕ 📂</span>
+        <span class="db-icon" data-i18n="➕ 📂">➕ 📂</span>
         <span class="db-name">{{ db.db_name }}</span>
       </div>
       <div class="tables-grid">

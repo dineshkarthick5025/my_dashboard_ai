@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Dashboard Editor</title>
+  <title data-i18n="Dashboard Editor">Dashboard Editor</title>
   <link rel="icon" href="https://aianalytics.ethicalintelligent.com/static/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="/static/css/dashboard_editor.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -16,34 +16,43 @@
   <!-- Tool Panel -->
   <div class="tools-panel">
     <div class="top-toolbar">
-      <h3>Tools</h3>
-      <a href="/dashboard/bidashboard" class="editor-button exit-button">Exit Editor</a>
-      <button class="editor-button save-button">Save Dashboard</button>
+      <h3 data-i18n="Tools">Tools</h3>
+      <a href="/dashboard/bidashboard" class="editor-button exit-button" data-i18n="Exit Editor">Exit Editor</a>
+      <button class="editor-button save-button" data-i18n="Save Dashboard">Save Dashboard</button>
       <div class="export-dropdown">
-        <button class="editor-button export-button" onclick="toggleExportDropdown()">Export As ⬇</button>
+        <button class="editor-button export-button" onclick="toggleExportDropdown()" data-i18n="Export As">Export As ⬇</button>
         <div id="exportOptions" class="dropdown-content">
-          <button onclick="exportAsPDF()">📄 PDF</button>
+          <button onclick="exportAsPDF()">📄 <span data-i18n="PDF">PDF</span></button>
         </div>
       </div>
+
+      <!-- Language Switch -->
+      <div class="language-dropdown" style="margin-left: 20px;">
+        <label for="languageSelect" data-i18n="Language" style="font-weight: 600; font-size: 14px; margin-right: 8px;">🌐</label>
+        <select id="languageSelect" class="styled-dropdown">
+          <option value="en">English</option>
+          <option value="ar">Arabic</option>
+          <option value="fa">Farsi</option>
+        </select>
+      </div>
+
       <div class="zoom-bar">
-        <label for="zoomRange">Zoom:</label><br>
+        <label for="zoomRange" data-i18n="Zoom">Zoom:</label><br>
         <input type="range" id="zoomRange" min="50" max="200" value="100" />
         <span id="zoomValue">100%</span>
       </div>
       <div class="dropdown-container">
-        <label for="canvas-size">Canvas Size:</label>
+        <label for="canvas-size" data-i18n="Canvas Size">Canvas Size:</label>
         <select id="canvas-size" class="styled-dropdown">
-          <option value="a4">A4 (595x842 px)</option>
-          <option value="a3">A3 (842x1191 px)</option>
-          <option value="custom">Custom</option>
+          <option value="a4" data-i18n="A4">A4 (595x842 px)</option>
+          <option value="a3" data-i18n="A3">A3 (842x1191 px)</option>
+          <option value="custom" data-i18n="Custom">Custom</option>
         </select>
       </div>
-
-      <!-- Inside tools-panel custom size apply -->
       <div id="custom-size-inputs" style="display: none; margin-top: 8px;">
-        <input type="number" id="custom-width" placeholder="Width (px)" />
-        <input type="number" id="custom-height" placeholder="Height (px)" />
-        <button id="applyCustomSizeBtn">Apply</button>
+        <input type="number" id="custom-width" placeholder="Width (px)" data-i18n-placeholder="Width (px)" />
+        <input type="number" id="custom-height" placeholder="Height (px)" data-i18n-placeholder="Height (px)" />
+        <button id="applyCustomSizeBtn" data-i18n="Apply">Apply</button>
       </div>
 
       <div id="chartCustomControls" style="margin-top: 20px;"></div>
@@ -56,36 +65,33 @@
   <div class="canvas-area" id="canvasArea">
     <div class="scroll-buffer">
       <div id="zoomWrapper">
-        <div class="canvas" id="dashboardCanvas">
-        </div>
+        <div class="canvas" id="dashboardCanvas"></div>
       </div>
     </div>
   </div>
 
   <!-- AI Input Panel -->
   <div class="sidebar-right">
-    <h3>Describe your dashboard</h3>
-    <label for="db-select" style="font-size: 13px; margin-top: 5px;">Data Source:</label>
+    <h3 data-i18n="Describe Dashboard">Describe your dashboard</h3>
+    <label for="db-select" style="font-size: 13px; margin-top: 5px;" data-i18n="Data Source">Data Source:</label>
     <select id="db-select" style="width: 100%; padding: 4px; font-size: 13px; margin-bottom: 12px;">
       {% for db in db_list %}
       <option value="{{ db }}">{{ db }}</option>
       {% endfor %}
     </select>
 
-    <textarea id="dashboardPrompt" placeholder="e.g., Show monthly revenue comparison for 2024..."></textarea>
+    <textarea id="dashboardPrompt" placeholder="e.g., Show monthly revenue comparison for 2024..." data-i18n-placeholder="Describe your dashboard"></textarea>
     <div style="margin-top: 10px;">
-      <label for="chart-type">Select Chart Type:</label>
+      <label for="chart-type" data-i18n="Select Chart Type">Select Chart Type:</label>
       <br><br>
       <select id="chart-type">
-        <option value="">-- Select Chart Type (Optional) --</option>
-        <option value="line">Line Graph</option>
-        <option value="bar">Bar Graph</option>
-        <option value="pie">Pie Chart</option>
+        <option value="" data-i18n="Optional">-- Select Chart Type (Optional) --</option>
+        <option value="line" data-i18n="Line Graph">Line Graph</option>
+        <option value="bar" data-i18n="Bar Graph">Bar Graph</option>
+        <option value="pie" data-i18n="Pie Chart">Pie Chart</option>
       </select>
     </div>
-    <!-- Inside sidebar-right generate dashboard button -->
-    <button id="generateDashboardBtn">Generate Dashboard</button>
-
+    <button id="generateDashboardBtn" data-i18n="Generate Dashboard">Generate Dashboard</button>
   </div>
 </div>
 
@@ -93,15 +99,29 @@
 <div id="saveDashboardModal" class="modal">
   <div class="modal-content">
     <span class="close" id="closeSaveModal">&times;</span>
-    <h3>Save Your Dashboard</h3>
-    <input type="text" id="dashboardNameInput" placeholder="Enter dashboard name..." style="width: 100%; margin-top: 15px; padding: 8px;" />
+    <h3 data-i18n="Save Dashboard">Save Your Dashboard</h3>
+    <input type="text" id="dashboardNameInput" placeholder="Enter dashboard name..." data-i18n-placeholder="Enter dashboard name..." style="width: 100%; margin-top: 15px; padding: 8px;" />
     <div style="margin-top: 20px; text-align: right;">
-      <button id="confirmSaveBtn" class="db-option">💾 Save</button>
-      <button id="cancelSaveBtn" class="db-option" style="background-color: gray;">Cancel</button>
+      <button id="confirmSaveBtn" class="db-option" data-i18n="Save">💾 Save</button>
+      <button id="cancelSaveBtn" class="db-option" style="background-color: gray;" data-i18n="Cancel">Cancel</button>
     </div>
   </div>
 </div>
 
+<script src="/static/js/i18n.js"></script>
+<script>
+  document.getElementById('languageSelect').addEventListener('change', function () {
+    const lang = this.value;
+    localStorage.setItem('language', lang);
+    loadLanguage(lang);
+  });
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const savedLang = localStorage.getItem('language') || 'en';
+    document.getElementById('languageSelect').value = savedLang;
+    loadLanguage(savedLang);
+  });
+</script>
 {% block scripts %}
   <!-- Load state.js first since other modules depend on it -->
   <script type="module" src="/static/js/dashboard/state.js"></script>

@@ -6,48 +6,49 @@
 {% endblock %}
 
 {% block content %}
-<h2>Welcome back, {{ first_name }}!</h2>
+<h2 data-i18n="Welcome back,">Welcome back, {{ first_name }}!</h2>
 
 <div class="quick-actions">
-    <h3>QUICK ACTIONS:</h3>
+    <h3 data-i18n="QUICK ACTIONS:">QUICK ACTIONS:</h3>
     <div class="action-buttons">
-        <div class="action-card" id="createDashboard"><strong>CREATE<br>DASHBOARD</strong></div>
-        <div class="action-card" id="askAiBtn"><strong>ASK AI</strong></div>
-        <div class="action-card" id="connectDatabase"><strong>CONNECT<br>NEW DATABASE</strong></div>
-        <div class="action-card" id="uploadDataBtn"><strong>UPLOAD&nbsp;&nbsp;DATA</strong></div>
+        <div class="action-card" id="createDashboard"><strong data-i18n="CREATE DASHBOARD">CREATE DASHBOARD</strong></div>
+        <div class="action-card" id="askAiBtn"><strong data-i18n="ASK AI">ASK AI</strong></div>
+        <div class="action-card" id="connectDatabase"><strong data-i18n="CONNECT NEW DATABASE">CONNECT NEW DATABASE</strong></div>
+        <div class="action-card" id="uploadDataBtn"><strong data-i18n="UPLOAD DATA">UPLOAD DATA</strong></div>
    </div>
 </div>
 
 <!-- Ask AI Overlay -->
 <div id="askAiOverlay" class="ai-overlay">
   <div class="ai-header">
-    <h3>AI Assistant</h3>
-    <span class="close-btn" onclick="toggleAiOverlay()">&times;</span>
+    <h3 data-i18n="AI Assistant">AI Assistant</h3>
+    <span class="close-btn" onclick="toggleAiOverlay()" data-i18n="×">&times;</span>
   </div>
   <div class="ai-body" id="aiMessages">
     <!-- AI messages will appear here -->
   </div>
   <div class="ai-input-bar">
-    <input type="text" id="aiInput" placeholder="Ask something..." />
-    <button id="aiSendBtn">Send</button>
+    <input type="text" id="aiInput" placeholder="Ask something..." data-i18n-placeholder="Ask something..." />
+    <button id="aiSendBtn" data-i18n="Send">Send</button>
   </div>
 </div>
-
 
 <!-- Upload Data Modal -->
 <div id="uploadModal" class="modal">
   <div class="modal-content">
-    <span class="close" onclick="closeUploadModal()">&times;</span>
-    <h2>Upload Data</h2>
+    <span class="close" onclick="closeUploadModal()" data-i18n="×">&times;</span>
+    <h2 data-i18n="Upload Data">Upload Data</h2>
     <div class="db-options">
-      <p style="text-align: center; font-size: 16px; color: #555;">This feature is currently a work in progress. Stay tuned!</p>
+      <p style="text-align: center; font-size: 16px; color: #555;" data-i18n="This feature is currently a work in progress. Stay tuned!">
+        This feature is currently a work in progress. Stay tuned!
+      </p>
     </div>
   </div>
 </div>
 
 <!-- Recent Dashboards Section -->
 <div class="recent-dashboards">
-    <h3>RECENT DASHBOARDS:</h3>
+    <h3 data-i18n="RECENT DASHBOARDS:">RECENT DASHBOARDS:</h3>
     <br><br>
     {% if recent_dashboards %}
     <div class="thumbnail-grid">
@@ -56,14 +57,14 @@
             <div class="thumbnail-header">
                 <span>{{ dash.name }}</span>
                 <div class="thumbnail-actions">
-                    <button class="icon-btn edit-btn" onclick="window.location.href='/dashboardeditor?dashboard_id={{ dash.id }}'">✏️</button>
+                    <button class="icon-btn edit-btn" onclick="window.location.href='/dashboardeditor?dashboard_id={{ dash.id }}'" data-i18n="✏️">✏️</button>
                 </div>
             </div>
             <div class="thumbnail-preview">
                 {% if dash.thumbnail %}
                 <img src="{{ dash.thumbnail }}" alt="Dashboard Thumbnail" style="width: 100%; height: 100%; object-fit: cover;" />
                 {% else %}
-                <p>No preview available</p>
+                <p data-i18n="No preview available">No preview available</p>
                 {% endif %}
             </div>
         </div>
@@ -71,51 +72,50 @@
     </div>
     {% else %}
     <div class="empty-state">
-        <p>📭 No dashboards created yet.</p>
-        <a href="/dashboardeditor" class="new-dashboard-btn" style="margin-top: 15px;">➕ Create Your First Dashboard</a>
+        <p data-i18n="📭 No dashboards created yet.">📭 No dashboards created yet.</p>
+        <a href="/dashboardeditor" class="new-dashboard-btn" style="margin-top: 15px;" data-i18n="➕ Create Your First Dashboard">➕ Create Your First Dashboard</a>
     </div>
     {% endif %}
 </div>
 
-
 <!-- Hidden Modal -->
 <div id="dbModal" class="modal">
     <div class="modal-content">
-        <span class="close" id="closeModal">&times;</span>
-        <h2>Select Database Type</h2>
+        <span class="close" id="closeModal" data-i18n="×">&times;</span>
+        <h2 data-i18n="Select Database Type">Select Database Type</h2>
         <div class="db-options">
-            <button class="db-option" data-type="PostgreSQL" onclick="openPostgresForm()">PostgreSQL</button>
-            <button class="db-option" data-type="MySQL">MySQL</button>
-            <button class="db-option" data-type="MSSQL">MSSQL</button>
-            <button class="db-option" data-type="Oracle">Oracle</button>
+            <button class="db-option" data-type="PostgreSQL" onclick="openPostgresForm()" data-i18n="PostgreSQL">PostgreSQL</button>
+            <button class="db-option" data-type="MySQL" data-i18n="MySQL">MySQL</button>
+            <button class="db-option" data-type="MSSQL" data-i18n="MSSQL">MSSQL</button>
+            <button class="db-option" data-type="Oracle" data-i18n="Oracle">Oracle</button>
         </div>
     </div>
 </div>
 
 <div id="postgresModal" class="modal">
   <div class="modal-content">
-    <span class="close" onclick="closePostgresForm()">&times;</span>
-    <h3>Connect to PostgreSQL</h3>
+    <span class="close" onclick="closePostgresForm()" data-i18n="×">&times;</span>
+    <h3 data-i18n="Connect to PostgreSQL">Connect to PostgreSQL</h3>
     <form id="postgresForm" method="post" action="/dashboard/data">
       <input type="hidden" name="db_type" value="PostgreSQL">
-      <label>Host:</label>
-      <input type="text" name="host" required>
-      <label>Port:</label>
-      <input type="number" name="port" value="5432" required>
-      <label>Database Name:</label>
-      <input type="text" name="database" required>
-      <label>Username:</label>
-      <input type="text" name="user" required>
-      <label>Password:</label>
-      <input type="password" name="password" required>
-      <label>SSL Mode:</label>
+      <label data-i18n="Host:">Host:</label>
+      <input type="text" name="host" required data-i18n-placeholder="Host">
+      <label data-i18n="Port:">Port:</label>
+      <input type="number" name="port" value="5432" required data-i18n-placeholder="Port">
+      <label data-i18n="Database Name:">Database Name:</label>
+      <input type="text" name="database" required data-i18n-placeholder="Database Name">
+      <label data-i18n="Username:">Username:</label>
+      <input type="text" name="user" required data-i18n-placeholder="Username">
+      <label data-i18n="Password:">Password:</label>
+      <input type="password" name="password" required data-i18n-placeholder="Password">
+      <label data-i18n="SSL Mode:">SSL Mode:</label>
       <select name="sslmode">
-        <option value="disable">Disable</option>
-        <option value="require">Require</option>
-        <option value="verify-ca">Verify CA</option>
-        <option value="verify-full">Verify Full</option>
+        <option value="disable" data-i18n="Disable">Disable</option>
+        <option value="require" data-i18n="Require">Require</option>
+        <option value="verify-ca" data-i18n="Verify CA">Verify CA</option>
+        <option value="verify-full" data-i18n="Verify Full">Verify Full</option>
       </select>
-      <button type="submit">Connect</button>
+      <button type="submit" data-i18n="Connect">Connect</button>
     </form>
   </div>
 </div>
@@ -125,4 +125,3 @@
 {% block scripts %}
 <script src="/static/js/modal.js"></script>
 {% endblock %}
-
