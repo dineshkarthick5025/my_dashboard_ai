@@ -9,7 +9,7 @@
   <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 </head>
-<body>
+<body class="fade-in" style="opacity: 0;"></body>
 
 <div class="editor-container">
   <input type="hidden" id="dashboardId" value="{{ dashboard_id or '' }}">
@@ -194,6 +194,17 @@
     zoomWrapper.style.transform = originalTransform;
   }
 
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedLang = localStorage.getItem('language') || 'en';
+      document.getElementById('languageSelect').value = savedLang;
+      loadLanguage(savedLang).then(() => {
+        // Trigger the fade-in after i18n finishes
+        document.body.style.opacity = '1';
+      });
+    });
   </script>
   {% endblock %}
 
