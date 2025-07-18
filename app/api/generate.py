@@ -2,7 +2,7 @@ from fastapi import APIRouter, Request, Depends
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from app.dependencies import get_current_user, get_db
-from app.generatefuncs import generate_sql_from_prompt, generate_echarts_config, classify_intent_with_llm, generate_sql_from_prompt_for_prophet, generate_forecast_config
+from app.generatefuncs import generate_sql_from_prompt, generate_echarts_config, classify_intent_with_llm, generate_sql_from_prompt_for_prophet, generate_forecast_config,get_period
 from app.generate_helper import detect_chart_type, detect_output_format, save_query_history, transform_sql_result_to_llm_json
 from app.techniques import run_forecasting
 from app.session_connection import session_conn_manager
@@ -83,11 +83,12 @@ async def generate_dashboard(
             print(f"❌ [ERROR] SQL Execution for forecasting Failed: {e}")
             save_query_history(db, current_user, prompt, sql_query_forcast, "failed", None)
             return JSONResponse(status_code=500, content={"error": "SQL execution for forecasting failed"})
-        forecast_result = run_forecasting(prophet_data, prompt)
+        period=get_period(prompt)
+        forecast_result = run_forecasting(prophet_data, prompt, period)
         output_format = detect_output_format(prompt)
         print(f"✅ [DEBUG] Forecast Result: {forecast_result}")
         chart_type = "line"  # Forecasts are typically shown as line charts
-        echarts_config = generate_forecast_config(prompt, forecast_result, chart_type)
+        echarts_config = generate_forecast_config(prompt, forecast_result, period, chart_type)
         print(echarts_config)
         result_payload = {
             "chart_type": chart_type,

@@ -325,17 +325,55 @@ document.addEventListener('DOMContentLoaded', () => {
 //zoom
 
 
+// const zoomRange = document.getElementById('zoomRange');
+// const zoomValueDisplay = document.getElementById('zoomValue');
+// const zoomWrapper = document.getElementById('zoomWrapper');
+// const canvasArea = document.getElementById('canvasArea');
+
+// zoomRange.addEventListener('input', () => {
+//   const zoom = zoomRange.value;
+//   zoomWrapper.style.transform = `scale(${zoom / 100})`;
+//   zoomValueDisplay.textContent = `${zoom}%`;
+
+//   // Smooth scroll to center after zoom
+//   setTimeout(() => {
+//     canvasArea.scrollTo({
+//       top: (canvasArea.scrollHeight - canvasArea.clientHeight) / 2,
+//       left: (canvasArea.scrollWidth - canvasArea.clientWidth) / 2,
+//       behavior: 'smooth'
+//     });
+//   }, 100);
+// });
+
+// const baseWidth = 595;
+// const baseHeight = 842;
+// const scale = zoom / 100;
+
+// const scrollBuffer = document.querySelector('.scroll-buffer');
+
+// // Dynamically update scroll-buffer size
+// scrollBuffer.style.minWidth = `${baseWidth * scale + 200}px`;  // +200 for some buffer
+// scrollBuffer.style.minHeight = `${baseHeight * scale + 200}px`;
+
 const zoomRange = document.getElementById('zoomRange');
 const zoomValueDisplay = document.getElementById('zoomValue');
 const zoomWrapper = document.getElementById('zoomWrapper');
 const canvasArea = document.getElementById('canvasArea');
+const scrollBuffer = document.querySelector('.scroll-buffer');
 
 zoomRange.addEventListener('input', () => {
   const zoom = zoomRange.value;
-  zoomWrapper.style.transform = `scale(${zoom / 100})`;
+  const scale = zoom / 100;
+  zoomWrapper.style.transform = `scale(${scale})`;
   zoomValueDisplay.textContent = `${zoom}%`;
 
-  // Smooth scroll to center after zoom
+  // Dynamically adjust scroll buffer to match zoomed size
+  const baseWidth = 595;
+  const baseHeight = 842;
+  scrollBuffer.style.minWidth = `${baseWidth * scale + 200}px`;
+  scrollBuffer.style.minHeight = `${baseHeight * scale + 200}px`;
+
+  // Scroll to center
   setTimeout(() => {
     canvasArea.scrollTo({
       top: (canvasArea.scrollHeight - canvasArea.clientHeight) / 2,
@@ -344,6 +382,12 @@ zoomRange.addEventListener('input', () => {
     });
   }, 100);
 });
+
+
+
+
+
+
 
 window.addEventListener('DOMContentLoaded', () => {
   // Initial center scroll

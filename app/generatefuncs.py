@@ -164,33 +164,61 @@ Please use chart labels in the language of the user prompt.
         return {}
     
 
-def generate_forecast_config(user_prompt, forecast_result, chart_type="line"):
+def generate_forecast_config(user_prompt, forecast_result, period, chart_type="line"):
     """
-    Generates minimal forecast visualization config in exact requested format.
+    Generates forecast visualization config in a simplified single-series format:
+    {
+        "title": "Some Title",
+        "xAxisData": [...],
+        "seriesData": [
+            {"name": "Total Sales", "type": "line", "data": [...]}
+        ]
+    }
     """
     print(f"Generating forecast config for prompt: {user_prompt}")
     x_axis_data = []
+    combined_data = []
+
     historical_data = []
     forecast_data = []
-    
+
+    historical_dates = []
+    forecast_dates = []
+
     for item in forecast_result:
         date_str = item['date'].strftime('%Y-%m-%d')
         value = float(item['value']) if isinstance(item['value'], Decimal) else item['value']
-        
-        x_axis_data.append(date_str)
+
         if item['type'] == 'historical':
             historical_data.append(value)
+            historical_dates.append(date_str)
         else:
             forecast_data.append(value)
-    
+            forecast_dates.append(date_str)
+
+    # Trim to ensure equal period entries
+    historical_data = historical_data[-period:]
+    forecast_data = forecast_data[:period]
+    historical_dates = historical_dates[-period:]
+    forecast_dates = forecast_dates[:period]
+
+    # Combine x-axis and data
+    x_axis_data = historical_dates + forecast_dates
+    combined_data = historical_data + forecast_data
+
     return {
         "title": f"Forecast: {user_prompt[:50]}..." if len(user_prompt) > 50 else user_prompt,
         "xAxisData": x_axis_data,
         "seriesData": [
-            {"name": "Historical", "type": "line", "data": historical_data},
-            {"name": "Forecast", "type": "line", "data": forecast_data}
+            {
+                "name": "Total Forecast",  # You can change this as needed
+                "type": chart_type,
+                "data": combined_data
+            }
         ]
     }
+
+
 
 def classify_intent_with_llm(user_prompt):
     """
@@ -311,3 +339,36 @@ def askai(user_message: str) -> str:
     except Exception as e:
         print("[AI ERROR]", e)
         return "Sorry, I'm currently unable to respond."
+    
+
+def get_period(user_prompt):
+    """
+    Determines the forecast period in days using LLM.
+
+    Args:
+        user_prompt (str): User's original query
+
+    Returns:
+        int: Forecast period in days
+    """
+    prompt = f"""
+You are an AI assistant for a no-code data analysis platform. 
+Your job is to find the period the user wants the forecast for, in days.
+
+User's Request: {user_prompt}
+
+Respond with ONLY the period in days, no explanations and only number.
+"""
+
+    response = client.chat.completions.create(
+        model="gpt-4.1",
+        messages=[{"role": "user", "content": prompt}]
+    )
+
+    period_str = response.choices[0].message.content.strip()
+    
+    try:
+        period = int(period_str)
+        return period
+    except ValueError:
+        raise ValueError(f"Invalid period received from LLM: '{period_str}'")

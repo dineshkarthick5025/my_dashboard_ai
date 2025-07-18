@@ -1,7 +1,7 @@
 from prophet import Prophet
 import pandas as pd
 
-def run_forecasting(data, user_prompt):
+def run_forecasting(data, user_prompt,period):
     """
     Runs Prophet forecasting on provided data.
 
@@ -20,7 +20,7 @@ def run_forecasting(data, user_prompt):
         model.fit(df)
 
         # Forecast 30 future periods (you can customize this)
-        future = model.make_future_dataframe(periods=30)
+        future = model.make_future_dataframe(periods=period)
         forecast = model.predict(future)
 
         # Prepare historical data

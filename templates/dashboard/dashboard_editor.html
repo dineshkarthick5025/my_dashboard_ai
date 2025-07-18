@@ -17,49 +17,51 @@
   <input type="hidden" id="dashboardId" value="{{ dashboard_id or '' }}">
   <!-- Tool Panel -->
   <div class="tools-panel">
-    <div class="top-toolbar">
-      <h3 data-i18n="Tools">Tools</h3>
-      <a href="/dashboard/bidashboard" class="editor-button exit-button" data-i18n="Exit Editor">Exit Editor</a>
-      <button class="editor-button save-button" data-i18n="Save Dashboard">Save Dashboard</button>
-      <div class="export-dropdown">
-        <button class="editor-button export-button" onclick="toggleExportDropdown()" data-i18n="Export As">Export As
-          ⬇</button>
-        <div id="exportOptions" class="dropdown-content">
-          <button onclick="exportAsPDF()">📄 <span data-i18n="PDF">PDF</span></button>
+    <div style="height: 70%; overflow-y: auto;">
+      <div class="top-toolbar">
+        <h3 data-i18n="Tools">Tools</h3>
+        <a href="/dashboard/bidashboard" class="editor-button exit-button" data-i18n="Exit Editor">Exit Editor</a>
+        <button class="editor-button save-button" data-i18n="Save Dashboard">Save Dashboard</button>
+        <div class="export-dropdown">
+          <button class="editor-button export-button" onclick="toggleExportDropdown()" data-i18n="Export As">Export As
+            ⬇</button>
+          <div id="exportOptions" class="dropdown-content">
+            <button onclick="exportAsPDF()">📄 <span data-i18n="PDF">PDF</span></button>
+          </div>
         </div>
-      </div>
 
-      <!-- Language Switch -->
-      <div class="language-dropdown" style="margin-left: 20px;">
-        <label for="languageSelect" data-i18n="Language"
-          style="font-weight: 600; font-size: 14px; margin-right: 8px;">🌐</label>
-        <select id="languageSelect" class="styled-dropdown">
-          <option value="en">English</option>
-          <option value="ar">Arabic</option>
-          <option value="fa">Farsi</option>
-        </select>
-      </div>
+        <!-- Language Switch -->
+        <div class="language-dropdown" style="margin-left: 20px;">
+          <label for="languageSelect" data-i18n="Language"
+            style="font-weight: 600; font-size: 14px; margin-right: 8px;">🌐</label>
+          <select id="languageSelect" class="styled-dropdown">
+            <option value="en">English</option>
+            <option value="ar">Arabic</option>
+            <option value="fa">Farsi</option>
+          </select>
+        </div>
 
-      <div class="zoom-bar">
-        <label for="zoomRange" data-i18n="Zoom">Zoom:</label><br>
-        <input type="range" id="zoomRange" min="50" max="200" value="100" />
-        <span id="zoomValue">100%</span>
-      </div>
-      <div class="dropdown-container">
-        <label for="canvas-size" data-i18n="Canvas Size">Canvas Size:</label>
-        <select id="canvas-size" class="styled-dropdown">
-          <option value="a4" data-i18n="A4">A4 (595x842 px)</option>
-          <option value="a3" data-i18n="A3">A3 (842x1191 px)</option>
-          <option value="custom" data-i18n="Custom">Custom</option>
-        </select>
-      </div>
-      <div id="custom-size-inputs" style="display: none; margin-top: 8px;">
-        <input type="number" id="custom-width" placeholder="Width (px)" data-i18n-placeholder="Width (px)" />
-        <input type="number" id="custom-height" placeholder="Height (px)" data-i18n-placeholder="Height (px)" />
-        <button id="applyCustomSizeBtn" data-i18n="Apply">Apply</button>
-      </div>
+        <div class="zoom-bar">
+          <label for="zoomRange" data-i18n="Zoom">Zoom:</label><br>
+          <input type="range" id="zoomRange" min="50" max="200" value="100" />
+          <span id="zoomValue">100%</span>
+        </div>
+        <div class="dropdown-container">
+          <label for="canvas-size" data-i18n="Canvas Size">Canvas Size:</label>
+          <select id="canvas-size" class="styled-dropdown">
+            <option value="a4" data-i18n="A4">A4 (595x842 px)</option>
+            <option value="a3" data-i18n="A3">A3 (842x1191 px)</option>
+            <option value="custom" data-i18n="Custom">Custom</option>
+          </select>
+        </div>
+        <div id="custom-size-inputs" style="display: none; margin-top: 8px;">
+          <input type="number" id="custom-width" placeholder="Width (px)" data-i18n-placeholder="Width (px)" />
+          <input type="number" id="custom-height" placeholder="Height (px)" data-i18n-placeholder="Height (px)" />
+          <button id="applyCustomSizeBtn" data-i18n="Apply">Apply</button>
+        </div>
 
-      <div id="chartCustomControls" style="margin-top: 20px;"></div>
+        <div id="chartCustomControls" style="margin-top: 20px;"></div>
+      </div>
     </div>
 
     <div class="bottom-toolbar" id="widgetListBar"></div>
